@@ -8,7 +8,7 @@ exports.countys = [
         name: "Vasternorrland",
     },
     {
-        county_id: 1,
+        county_id: 3,
         name: "Abisko",
     },
 ]
