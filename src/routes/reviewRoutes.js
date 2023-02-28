@@ -12,18 +12,18 @@ const {
 //REVIEW
 
 //GET /api/v1/reviews - Get all reviews
-router.get("/", getAllReviews);
+router.get("/", isAuthenticated, getAllReviews);
 
 //GET /api/v1/reviews/:reviewId - Get a review by id
-router.get("/:reviewId", getReviewById);
+router.get("/:reviewId", isAuthenticated, getReviewById);
 
 //POST /api/v1/reviews - Create new review
-router.post("/", createNewReview);
+router.post("/", isAuthenticated, createNewReview);
 
 //PUT /api/v1/reviews/:reviewId - Update review by id
-router.put("/:reviewId", updateReviewById);
+router.put("/:reviewId", isAuthenticated, updateReviewById);
 
 //DELETE /api/v1/reviews/:reviewId - Delete review by id
-router.delete("/:reviewId", deleteReviewById);
+router.delete("/:reviewId", isAuthenticated, deleteReviewById);
 
 module.exports = router;
