@@ -1,11 +1,11 @@
 exports.users = [
     {
-        user_id: 2,
+        user_id: 1,
         name: "Bob",
         description: "Big fan of nature",
         email: "bobby123@mail.com",
         password: "secret",
-        fk_role_id: 1,
+        fk_role_id: 2,
     },
     {
         user_id: 2,
@@ -24,7 +24,7 @@ exports.users = [
         fk_role_id: 3,
     },
     {
-        user_id: 1,
+        user_id: 4,
         name: "Anna",
         description: "Love camping all year around",
         email: "anna_maja@mail.com",
@@ -32,7 +32,7 @@ exports.users = [
         fk_role_id: 1,
     },
     {
-        user_id: 1,
+        user_id: 5,
         name: "Boss",
         description: "Big Boss",
         email: "boss@mail.com",
