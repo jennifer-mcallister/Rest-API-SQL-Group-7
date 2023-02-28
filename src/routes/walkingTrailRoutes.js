@@ -1,15 +1,15 @@
-// const express = require('express')
-// const router = express.Router()
-// const { isAuthenticated } = require('../middleware/authenticationMiddleware')
-// const { getAllLists, getListById, createNewList, deleteListById } = require('../controllers/listController')
-// const { createNewTodo } = require('../controllers/todoController')
+const express = require('express')
+const router = express.Router()
+const { isAuthenticated } = require('../middleware/authenticationMiddleware')
+const { getAllWalkingtrails, getWalkingtrailById, createNewWalkingtrail, deleteWalkingtrailById } = require('../controllers/walkingtrailController')
+const { createNewReview } = require('../controllers/reviewController')
 
-// router.get('/', isAuthenticated, getAllLists)
-// router.get('/:listId', isAuthenticated, getListById)
+router.get('/', isAuthenticated, getAllWalkingtrails)
+router.get('/:listId', isAuthenticated, getWalkingtrailById)
 
-// router.post('/', isAuthenticated, createNewList)
-// router.post('/:listId/todos', isAuthenticated, createNewTodo)
+router.post('/', isAuthenticated, createNewWalkingtrail)
+router.post('/:listId/todos', isAuthenticated, createNewReview)
 
-// router.delete('/:listId', isAuthenticated, deleteListById)
+router.delete('/:listId', isAuthenticated, deleteWalkingtrailById)
 
-// module.exports = router
+module.exports = router
