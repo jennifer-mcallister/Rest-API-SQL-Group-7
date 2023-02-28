@@ -5,11 +5,11 @@ const { getAllWalkingtrails, getWalkingtrailById, createNewWalkingtrail, deleteW
 const { createNewReview } = require('../controllers/reviewController')
 
 router.get('/', isAuthenticated, getAllWalkingtrails)
-router.get('/:listId', isAuthenticated, getWalkingtrailById)
+router.get('/:walkingtrailId', isAuthenticated, getWalkingtrailById)
 
 router.post('/', isAuthenticated, createNewWalkingtrail)
-router.post('/:listId/todos', isAuthenticated, createNewReview)
+router.post('/:walkingtrailId/review', isAuthenticated, createNewReview)
 
-router.delete('/:listId', isAuthenticated, deleteWalkingtrailById)
+router.delete('/:walkingtrailId', isAuthenticated, deleteWalkingtrailById)
 
 module.exports = router
