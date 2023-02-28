@@ -38,5 +38,5 @@ exports.users = [
         email: "boss@mail.com",
         password: "secret",
         fk_role_id: 1,
-    }
+    },
 ]
