@@ -3,8 +3,8 @@ const router = express.Router();
 
 const authRoutes = require("./authRoutes");
 const userRoutes = require("./userRoutes");
-const reviewRoutes = require("./listRoutes");
-const walkingTrailRoutes = require("./todoRoutes");
+const reviewRoutes = require("./reviewRoutes");
+const walkingTrailRoutes = require("./walkingTrailRoutes");
 
 router.use("/auth", authRoutes);
 router.use("/users", userRoutes);
