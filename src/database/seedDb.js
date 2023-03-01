@@ -14,14 +14,14 @@ const seedWalkingtrailsDb = async () => {
         await sequelize.query(`DROP TABLE IF EXISTS role;`)
         await sequelize.query(`DROP TABLE IF EXISTS county;`)
         await sequelize.query(`DROP TABLE IF EXISTS user;`)
-        await sequelize.query(`DROP TABLE IF EXISTS walking_trail;`)
+        await sequelize.query(`DROP TABLE IF EXISTS walkingtrail;`)
         await sequelize.query(`DROP TABLE IF EXISTS review;`)
 
         // Create role table
         await sequelize.query(`
         CREATE TABLE IF NOT EXISTS role (
             role_id INTEGER PRIMARY KEY AUTOINCREMENT,
-            role TEXT NOT NULL
+            role TEXT NOT NULL UNIQUE
         );
         `)
 
@@ -29,7 +29,7 @@ const seedWalkingtrailsDb = async () => {
         await sequelize.query(`
         CREATE TABLE IF NOT EXISTS county (
             county_id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL
+            name TEXT NOT NULL UNIQUE
         );
         `)
 
@@ -46,11 +46,11 @@ const seedWalkingtrailsDb = async () => {
         );
         `)
 
-        // Create walking_trail table
+        // Create walkingtrail table
         await sequelize.query(`
-        CREATE TABLE IF NOT EXISTS walking_trail (
-            walking_trail_id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
+        CREATE TABLE IF NOT EXISTS walkingtrail (
+            walkingtrail_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL UNIQUE,
             location TEXT,
             fk_county_id INTEGER NOT NULL,
             FOREIGN KEY(fk_county_id) REFERENCES county(county_id),
@@ -69,8 +69,8 @@ const seedWalkingtrailsDb = async () => {
             title TEXT NOT NULL,
             description TEXT,
             rating INTEGER NOT NULL,
-            fk_walking_trail_id INTEGER NOT NULL,
-            FOREIGN KEY(fk_walking_trail_id) REFERENCES walking_trail(walking_trail_id),
+            fk_walkingtrail_id INTEGER NOT NULL,
+            FOREIGN KEY(fk_walkingtrail_id) REFERENCES walkingtrail(walkingtrail_id),
         );
         `)
 
@@ -180,12 +180,78 @@ const seedWalkingtrailsDb = async () => {
 
 
     let walkingtrailInsertQuery = 
-    'INSERT INTO walking_trail (name, location, fk_county_id, distance, difficulty, description) VALUES '
+    'INSERT INTO walkingtrail (name, location, fk_county_id, distance, difficulty, description) VALUES '
 
+    let walkingtrailInsertQueryVars = []
+
+    walkingtrails.forEach((walkingtrail, index, array) => {
+    let string = '('
+    for (let i = 1; i < 7; i++) {
+        string += `$${walkingtrailInsertQueryVars.length + i}`
+        if (i < 6) string + ','
+    }
+
+    walkingtrailInsertQuery += string + ')'
+    if (index < array.length -1) walkingtrailInsertQuery += ','
+
+    const variables = [
+        walkingtrail.name,
+        walkingtrail.location,
+    ]
+
+    const countyId = countysRes.find((c) => c.name === walkingtrail.county)
+    variables.push(countyId.county_id)
+
+    varibles.push(walkingtrail.distance, walkingtrail.difficulty, walkingtrail.description)
+
+    walkingtrailInsertQueryVars = [...walkingtrailInsertQueryVars, ...variables]
+    })
+    walkingtrailInsertQuery += ';'
+
+    await sequelize.query(walkingtrailInsertQuery, {
+    bind: walkingtrailInsertQueryVars,
+    })
+
+    const [walkingtrailssRes, walkingtrailsData] = await sequelize.query('SELECT name, walkingtrail_id FROM walkingtrail')
 
 
 
     // REVIEW
+
+    
+    let reviewInsertQuery = 
+    'INSERT INTO review (fk_user_id, title, description, rating, fk_walkingtrail_id) VALUES '
+
+    let reviewInsertQueryVars = []
+
+    reviews.forEach((review, index, array) => {
+    let string = '('
+    for (let i = 1; i < 6; i++) {
+        string += `$${reviewInsertQueryVars.length + i}`
+        if (i < 5) string + ','
+    }
+
+    reviewInsertQuery += string + ')'
+    if (index < array.length -1) reviewInsertQuery += ','
+
+    const variables = []
+
+    const userId = usersRes.find((u) => u.name === review.user)
+    variables.push(userId.user_id)
+
+    varibles.push(review.title, review.description, review.rating)
+
+    const walkingtrailId = walkingtrailsRes.find((w) => w.name === review.walkingtrail)
+    variables.push(walkingtrailId.walkingtrail_id)
+
+
+    reviewInsertQueryVars = [...reviewInsertQueryVars, ...variables]
+    })
+    reviewInsertQuery += ';'
+
+    await sequelize.query(reviewInsertQuery, {
+    bind: reviewInsertQueryVars,
+    })
 
 
     } catch (error) {
