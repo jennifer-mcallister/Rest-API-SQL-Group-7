@@ -1,6 +1,6 @@
 exports.walkingTrails = [
     {
-        walking_trail_id: 1,
+        walkingtrail_id: 1,
         name: 'Sörmlandsleden',
         location: 'Vid sjön',
         fk_county_id: 1,
@@ -10,7 +10,7 @@ exports.walkingTrails = [
             'En trevlig och lagom lång vandring med många härliga etapper. Framkomligheten är bra och passar de flesta som kan röra sig framåt. En del av vandringen går genom städer men för det mesta är det skog. Bra med vatten och vindskydd, skyltar finns ofta till dessa.',
     },
     {
-        walking_trail_id: 2,
+        walkingtrail_id: 2,
         name: 'Roslagsleden',
         location: 'Vid skogen',
         fk_county_id: 1,
@@ -20,7 +20,7 @@ exports.walkingTrails = [
             'Fin och enkel vandringsled, med fina turer kring antika vikingagravar. Har ni tur kan ni stöta på runstenar! Framkomligheten kan variera vid vissa etapper men för det mesta går det bra. Lagom lång vandring!',
     },
     {
-        walking_trail_id: 3,
+        walkingtrail_id: 3,
         name: 'Upplandsleden',
         location: 'Vid mystiska dalen',
         fk_county_id: 1,
@@ -30,7 +30,7 @@ exports.walkingTrails = [
             'Den berömda Upplandsleden, känd för sina hemsökta platser där den skrikande damen kan skymtas. Akta er för att passera Balders bro vid midnatt för att undvika damen i vit klänning. Framkomligheten är därför anpassad för de med nerver av stål.',
     },
     {
-        walking_trail_id: 4,
+        walkingtrail_id: 4,
         name: 'Höga Kustenleden',
         location: 'Vid berget',
         fk_county_id: 2,
@@ -40,7 +40,7 @@ exports.walkingTrails = [
             'En vandring för den med bättre fysik, här finns snabba höjningar och varierande terräng. För den som däremot orkar ta sig förbi detta väntar otroliga miljöer, där vi har en sjö uppe på berget. Varför inte se den berömda Slåttdalsskrevan det sägs att Ronja Rövardotter spelades in? (Vilket den inte gjorde)',
     },
     {
-        walking_trail_id: 5,
+        walkingtrail_id: 5,
         name: 'Rotsidan',
         location: 'Vid roten av roten',
         fk_county_id: 2,
@@ -50,7 +50,7 @@ exports.walkingTrails = [
             'En trevlig och lagom lång vandring med många härliga etapper. Framkomligheten är bra och passar de flesta som kan röra sig framåt. En del av vandringen går genom städer men för det mesta är det skog. Bra med vatten och vindskydd, skyltar finns ofta till dessa',
     },
     {
-        walking_trail_id: 6,
+        walkingtrail_id: 6,
         name: 'Helvetesbrännan',
         location: 'Vid Mordor',
         fk_county_id: 2,
@@ -59,7 +59,7 @@ exports.walkingTrails = [
         description: 'Utmaningen för den uthållige och mest tålige våghalsen. Ledet som kommer bränna dig hur mycket solskydd du än har. Förutom myggen kanske bergsvärmen ställer till det för er campingplats. Bortser ni från detta är det en relativt trevlig vandring med många etapper. Krävs ett gott humör!',
     },
     {
-        walking_trail_id: 7,
+        walkingtrail_id: 7,
         name: 'Rotenleden',
         location: 'Vid andra roten',
         fk_county_id: 2,
@@ -68,7 +68,7 @@ exports.walkingTrails = [
         description: 'En upplevelse få vill vara utan, det finns mycket härligt att upptäcka längst detta led. Terrängen kan variera vid olika etapper men den vilda naturen som omger ledet gör vandringen mycket behgalig.',
     },
     {
-        walking_trail_id: 8,
+        walkingtrail_id: 8,
         name: 'Kungsleden',
         location: 'Vid monarkens led',
         fk_county_id: 3,
@@ -77,7 +77,7 @@ exports.walkingTrails = [
         description: 'Ett led för den mest adlige! Förutom sin turistäta ansamling kan man umgås med mygg från våtmarken, se vår berömda Kebnekaise eller bara njuta av den svenska fjällen. Varmt rekommenderad!',
     },
     {
-        walking_trail_id: 9,
+        walkingtrail_id: 9,
         name: 'Kärkevagge',
         location: 'Bland bergen',
         fk_county_id: 3,
@@ -86,7 +86,7 @@ exports.walkingTrails = [
         description: 'En vandring som kommer likna den häftigaste fantasyboken du läst. Terräng som är svår, så välj dina vandringskängor med omsorg.',
     },
     {
-        walking_trail_id: 10,
+        walkingtrail_id: 10,
         name: 'Björkliden',
         location: 'Vid Betula pendula',
         fk_county_id: 3,
