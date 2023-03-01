@@ -75,7 +75,15 @@ const seedWalkingtrailsDb = async () => {
         );
         `);
 
-    // ROLE
+
+
+    await sequelize.query(
+      `INSERT INTO county (name) VALUES ('Stockholm'), ('Vasternorrland'), ('Abisko')`
+    );
+
+    await sequelize.query(
+      `INSERT INTO role (role) VALUES ('ADMIN'), ('COUNTY'), ('USER')`
+    );
 
     await sequelize.query(
       `INSERT INTO users (email, password) VALUES 
@@ -83,10 +91,6 @@ const seedWalkingtrailsDb = async () => {
             ('jessica.tan@gmail.com', 'password456',0), 
             ('mikael.rönnberg@gmail.com','password789',0), 
             ('jennifer.mcallister@gmail.com','password123',0)`
-    );
-
-    await sequelize.query(
-      `INSERT INTO county (name) VALUES ('Stockholm'), ('Vasternorrland'), ('Abisko')`
     );
 
     await sequelize.query(`INSERT INTO stores 
