@@ -1,15 +1,15 @@
-const express = require("express");
-const router = express.Router();
-const { isAuthenticated } = require("../middleware/authenticationMiddleware");
-const {
-  getAllReviews,
-  getReviewById,
-  createNewReview,
-  updateReviewById,
-  deleteReviewById,
-} = require("../controllers/reviewControllers");
+// const express = require("express");
+// const router = express.Router();
+// const { isAuthenticated } = require("../middleware/authenticationMiddleware");
+// const {
+//   getAllReviews,
+//   getReviewById,
+//   createNewReview,
+//   updateReviewById,
+//   deleteReviewById,
+// } = require("../controllers/reviewControllers");
 
-//REVIEW
+// //REVIEW
 
 // //GET /api/v1/reviews - Get all reviews
 // router.get("/", isAuthenticated, getAllReviews);
@@ -26,4 +26,4 @@ const {
 // //DELETE /api/v1/reviews/:reviewId - Delete review by id
 // router.delete("/:reviewId", isAuthenticated, deleteReviewById);
 
-module.exports = router;
+// module.exports = router;
