@@ -27,7 +27,7 @@ exports.isAuthenticated = async (req, res, next) => {
       // @ts-ignore
       role: payload.role,
       // @ts-ignore
-      username: payload.username,
+      name: payload.name,
     };
 
     // Go to next step (controller || middleware)
