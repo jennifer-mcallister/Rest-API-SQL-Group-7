@@ -53,10 +53,11 @@ const seedWalkingtrailsDb = async () => {
             name TEXT NOT NULL UNIQUE,
             location TEXT,
             fk_county_id INTEGER NOT NULL,
-            FOREIGN KEY(fk_county_id) REFERENCES county(county_id),
             distance INTEGER,
             difficulty TEXT,
             description TEXT,
+
+            FOREIGN KEY(fk_county_id) REFERENCES county(county_id)
         );
         `)
 
@@ -65,12 +66,13 @@ const seedWalkingtrailsDb = async () => {
         CREATE TABLE IF NOT EXISTS review (
             review_id INTEGER PRIMARY KEY AUTOINCREMENT,
             fk_user_id INTEGER NOT NULL,
-            FOREIGN KEY(fk_user_id) REFERENCES user(user_id),
             title TEXT NOT NULL,
             description TEXT,
             rating INTEGER NOT NULL,
             fk_walkingtrail_id INTEGER NOT NULL,
-            FOREIGN KEY(fk_walkingtrail_id) REFERENCES walkingtrail(walkingtrail_id),
+
+            FOREIGN KEY(fk_user_id) REFERENCES user(user_id),
+            FOREIGN KEY(fk_walkingtrail_id) REFERENCES walkingtrail(walkingtrail_id)
         );
         `)
 
@@ -218,7 +220,7 @@ const seedWalkingtrailsDb = async () => {
 
     // REVIEW
 
-    
+
     let reviewInsertQuery = 
     'INSERT INTO review (fk_user_id, title, description, rating, fk_walkingtrail_id) VALUES '
 
@@ -263,4 +265,4 @@ const seedWalkingtrailsDb = async () => {
     }
 }
     
-seedPresidentsDb()
+seedWalkingtrailsDb()
