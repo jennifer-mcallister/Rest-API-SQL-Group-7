@@ -50,7 +50,7 @@ const seedWalkingtrailsDb = async () => {
         await sequelize.query(`
         CREATE TABLE IF NOT EXISTS walking_trail (
             walking_trail_id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL UNIQUE,
+            name TEXT NOT NULL,
             location TEXT,
             fk_county_id INTEGER NOT NULL,
             FOREIGN KEY(fk_county_id) REFERENCES county(county_id),

@@ -45,8 +45,8 @@ exports.review = [
     fk_walking_trail_id: 5,
   },
   {
-    review_id: 1,
-    fk_user_id: 6,
+    review_id: 6,
+    fk_user_id: 5,
     title: "Bra men finns bättre.",
     description:
       "is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable",
@@ -54,8 +54,8 @@ exports.review = [
     fk_walking_trail_id: 6,
   },
   {
-    review_id: 2,
-    fk_user_id: 7,
+    review_id: 7,
+    fk_user_id: 3,
     title: "Aldrig mer.",
     description:
       "Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum",
@@ -63,8 +63,8 @@ exports.review = [
     fk_walking_trail_id: 7,
   },
   {
-    review_id: 3,
-    fk_user_id: 8,
+    review_id: 8,
+    fk_user_id: 2,
     title: "Jag är ingen vandringsperson..",
     description:
       "will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpos",
@@ -72,8 +72,8 @@ exports.review = [
     fk_walking_trail_id: 4,
   },
   {
-    review_id: 4,
-    fk_user_id: 9,
+    review_id: 9,
+    fk_user_id: 4,
     title: "Magiskt och lugnande..",
     description:
       "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over",
@@ -81,8 +81,8 @@ exports.review = [
     fk_walking_trail_id: 9,
   },
   {
-    review_id: 5,
-    fk_user_id: 10,
+    review_id: 10,
+    fk_user_id: 1,
     title: "Kul men inte för mig!",
     description:
       "2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words,",
