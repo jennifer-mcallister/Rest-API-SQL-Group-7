@@ -7,7 +7,7 @@ const reviewRoutes = require("./reviewRoutes");
 const walkingTrailRoutes = require("./walkingTrailRoutes");
 
 router.use("/auth", authRoutes);
-router.use("/users", userRoutes);
+router.use("/user", userRoutes);
 router.use("/review", reviewRoutes);
 router.use("/walkingtrail", walkingTrailRoutes);
 
