@@ -6,7 +6,7 @@ const {
   getWalkingtrailById,
   createNewWalkingtrail,
   deleteWalkingtrailById,
-} = require("../controllers/walkingtrailController");
+} = require("../controllers/walkingtrailControllers");
 const { createNewReview } = require("../controllers/reviewControllers");
 
 router.get("/", isAuthenticated, getAllWalkingtrails);
