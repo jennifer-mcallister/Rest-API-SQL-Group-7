@@ -8,7 +8,7 @@ exports.isAuthenticated = async (req, res, next) => {
 
   // Check it contains JWT token and extract the token
   if (authHeader && authHeader.startsWith("Bearer")) {
-    token = authHeader.split(" ")[1];
+    token = authHeader.split(" ")[1]; // denna delar upp stringen med bearer och ett mellanslag och lägger till vår token på position 1
   }
 
   // If no token, then throw UnauthenticatedError
