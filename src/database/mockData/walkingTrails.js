@@ -35,7 +35,7 @@ exports.walkingTrails = [
         location: 'Vid berget',
         fk_county_id: 2,
         distance: 129,
-        difficulty: 'Hard',
+        difficulty: 'HARD',
         description:
             'En vandring för den med bättre fysik, här finns snabba höjningar och varierande terräng. För den som däremot orkar ta sig förbi detta väntar otroliga miljöer, där vi har en sjö uppe på berget. Varför inte se den berömda Slåttdalsskrevan det sägs att Ronja Rövardotter spelades in? (Vilket den inte gjorde)',
     },
