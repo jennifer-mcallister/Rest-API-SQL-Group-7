@@ -86,11 +86,12 @@ const seedWalkingtrailsDb = async () => {
     );
 
     await sequelize.query(
-      `INSERT INTO users (email, password) VALUES 
-            ('testus@gmail.com','testar123', 1), 
-            ('jessica.tan@gmail.com', 'password456',0), 
-            ('mikael.rönnberg@gmail.com','password789',0), 
-            ('jennifer.mcallister@gmail.com','password123',0)`
+      `INSERT INTO user (name, description, email, password, fk_role_id) VALUES 
+            ('Bob', 'Big fan of nature', 'bobby123@mail.com', 'secret', (SELECT id FROM role r WHERE role = 'USER')), 
+            ('Frans', 'Forest lover', 'forest_frans@mail.com', 'secret', (SELECT id FROM role r WHERE role = 'USER')),
+            ('Karen', 'Mother nature', 'karen@mail.com', 'secret', (SELECT id FROM role r WHERE role = 'COUNTY')),
+            ('Boss', 'Big Boss', 'boss@mail.com', 'secret', (SELECT id FROM role r WHERE role = 'ADMIN')),
+            ('Anna', 'Love camping all year around', 'anna_maja@mail.com', 'secret', (SELECT id FROM role r WHERE role = 'USER'))`
     );
 
     await sequelize.query(`INSERT INTO stores 
