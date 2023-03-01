@@ -45,7 +45,7 @@ exports.review = [
     fk_walking_trail_id: 5,
   },
   {
-    review_id: 6,
+    review_id: 1,
     fk_user_id: 6,
     title: "Bra men finns bättre.",
     description:
@@ -54,7 +54,7 @@ exports.review = [
     fk_walking_trail_id: 6,
   },
   {
-    review_id: 7,
+    review_id: 2,
     fk_user_id: 7,
     title: "Aldrig mer.",
     description:
@@ -63,16 +63,16 @@ exports.review = [
     fk_walking_trail_id: 7,
   },
   {
-    review_id: 8,
+    review_id: 3,
     fk_user_id: 8,
     title: "Jag är ingen vandringsperson..",
     description:
       "will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpos",
     rating: 1,
-    fk_walking_trail_id: 8,
+    fk_walking_trail_id: 4,
   },
   {
-    review_id: 9,
+    review_id: 4,
     fk_user_id: 9,
     title: "Magiskt och lugnande..",
     description:
@@ -81,7 +81,7 @@ exports.review = [
     fk_walking_trail_id: 9,
   },
   {
-    review_id: 10,
+    review_id: 5,
     fk_user_id: 10,
     title: "Kul men inte för mig!",
     description:
