@@ -86,7 +86,7 @@ const seedWalkingtrailsDb = async () => {
     );
 
     await sequelize.query(
-      `INSERT INTO citys (city_name) VALUES ('Stockholm'), ('Malmö'), ('Göteborg')`
+      `INSERT INTO county (name) VALUES ('Stockholm'), ('Vasternorrland'), ('Abisko')`
     );
 
     await sequelize.query(`INSERT INTO stores 
