@@ -5,6 +5,7 @@ exports.errorMiddleware = (error, req, res, next) => {
     statusCode: error.statusCode || 500,
     message: error.message || "Something went wrong try again later",
   };
+  console.log(error);
 
   if (process.env.NODE_ENV === "development") {
     console.error(error);

@@ -7,7 +7,7 @@ const { userRoles } = require("../constants/users");
 
 exports.register = async (req, res) => {
   // Place desired username, email and password into local variables
-  const { password, email } = req.body;
+  const { password, email, user } = req.body;
 
   // Encrypt the desired password
   const salt = await bcrypt.genSalt(10);
@@ -15,33 +15,35 @@ exports.register = async (req, res) => {
 
   // Check if there are users in the database
   const [results, metadata] = await sequelize.query(
-    "SELECT id FROM users LIMIT 1"
+    "SELECT user_id FROM user LIMIT 1"
   );
 
   // Add user to database (make admin if first user)
-  if (!results || results.length < 1) {
-    // prettier-ignore
-    await sequelize.query(
-			'INSERT INTO users (email, password, is_admin) VALUES ($email, $password, TRUE)', 
-			{
-				bind: {
-					password: hashedpassword,
-					email: email
-				}
-			}
-		)
-  } else {
-    // prettier-ignore
-    await sequelize.query(
-			'INSERT INTO users (email, password) VALUES ($email, $password)', 
+  // if (!results || results.length < 1) {
+  //   // prettier-ignore
+  //   await sequelize.query(
+  // 		'INSERT INTO user (email, password, is_admin, name) VALUES ($email, $password, TRUE, $user, )',
+  // 		{
+  // 			bind: {
+  // 				password: hashedpassword,
+  // 				email: email,
+  //         user: user
+  // 			}
+  // 		}
+  // 	)
+  // } else {
+  // prettier-ignore
+  await sequelize.query(
+			'INSERT INTO user (email, password, name, fk_role_id) VALUES ($email, $password, $user, (SELECT role_id FROM role WHERE role = "USER"))', 
 			{
 				bind: {
 					password: hashedpassword,
 					email: email,
+          user: user
 				},
 			}
 		)
-  }
+  // }
 
   // Request response
   return res.status(201).json({
@@ -56,7 +58,7 @@ exports.login = async (req, res) => {
   // Check if user with that email exits in db
   // prettier-ignore
   const [user, metadata] = await sequelize.query(
-		'SELECT * FROM users WHERE email = $email LIMIT 1;', {
+		'SELECT * FROM user WHERE email = $email LIMIT 1;', {
 		bind: { email },
 		type: QueryTypes.SELECT
 	})

@@ -10,12 +10,11 @@ const seedWalkingtrailsDb = async () => {
     // TABLES
 
     // Drop tables if exist
-    // await sequelize.query(`DROP TABLE IF EXISTS role;`);
-    // await sequelize.query(`DROP TABLE IF EXISTS county;`);
-    // await sequelize.query(`DROP TABLE IF EXISTS user;`); 
-    // await sequelize.query(`DROP TABLE IF EXISTS walkingtrail;`);
-    // await sequelize.query(`DROP TABLE IF EXISTS review;`);
-
+    await sequelize.query(`DROP TABLE IF EXISTS review;`);
+    await sequelize.query(`DROP TABLE IF EXISTS walkingtrail;`);
+    await sequelize.query(`DROP TABLE IF EXISTS county;`);
+    await sequelize.query(`DROP TABLE IF EXISTS user;`);
+    await sequelize.query(`DROP TABLE IF EXISTS role;`);
     // Create role table
     await sequelize.query(`
         CREATE TABLE IF NOT EXISTS role (
@@ -161,7 +160,6 @@ const seedWalkingtrailsDb = async () => {
       'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the', 
       5, (SELECT walkingtrail_id FROM walkingtrail WHERE name = 'Helvetesbrännan')) `
     );
-
 
     console.log("Database successfully populated with data");
   } catch (error) {

@@ -5,7 +5,7 @@ const { QueryTypes } = require("sequelize");
 
 exports.getAllUsers = async (req, res) => {
   // prettier-ignore
-  const [users, metadata] = await sequelize.query('SELECT id, email FROM users')
+  const [users, metadata] = await sequelize.query('SELECT user_id, email FROM users')
   return res.json(users);
 };
 
@@ -15,7 +15,7 @@ exports.getUserById = async (req, res) => {
 
   // Get the user from the database (NOTE: excluding password)
   const [user, metadata] = await sequelize.query(
-    "SELECT id, email FROM users WHERE id = $userId",
+    "SELECT user_id, email FROM user WHERE user_id = $userId",
     {
       bind: { userId },
       type: QueryTypes.SELECT,
@@ -40,7 +40,7 @@ exports.deleteUserById = async (req, res) => {
 
   // Delete the user from the database
   const [results, metadata] = await sequelize.query(
-    "DELETE FROM users WHERE id = $userId RETURNING *",
+    "DELETE FROM user WHERE user_id = $userId RETURNING *",
     {
       bind: { userId },
     }
