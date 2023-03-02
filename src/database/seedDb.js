@@ -132,7 +132,7 @@ const seedWalkingtrailsDb = async () => {
 
     await sequelize.query(
       `INSERT INTO review (review_id, fk_user_id, title, description, rating, fk_walkingtrail_id) VALUES 
-      ('1', (SELECT user_id FROM user WHERE name = 'Bob'), 'Måste testas!', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the', 5, (SELECT walkingtrail_id FROM walkingtrail WHERE name = 'Sörmlandsleden')),
+      (1, (SELECT user_id FROM user WHERE name = 'Bob'), 'Måste testas!', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the', 5, (SELECT walkingtrail_id FROM walkingtrail WHERE name = 'Sörmlandsleden')),
       (2, (SELECT user_id FROM user WHERE name = 'Frans'), 'Helt ok', '1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but', 3, (SELECT walkingtrail_id FROM walkingtrail WHERE name = 'Roslagsleden')),
       (3, (SELECT user_id FROM user WHERE name = 'Karen'), 'UNDERBAR', 'Essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets', 5, (SELECT walkingtrail_id FROM walkingtrail WHERE name = 'Upplandleden')),
       (4, (SELECT user_id FROM user WHERE name = 'Anna'), 'Vacker och behaglig', '1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem', 5, (SELECT walkingtrail_id FROM walkingtrail WHERE name = 'Höga Kustenleden')),
