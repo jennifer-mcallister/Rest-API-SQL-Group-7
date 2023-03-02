@@ -9,12 +9,12 @@ const {
 } = require("../controllers/walkingTrailControllers");
 const { createNewReview } = require("../controllers/reviewControllers");
 
-// router.get("/", isAuthenticated, getAllWalkingtrails);
-// router.get("/:walkingtrailId", isAuthenticated, getWalkingtrailById);
+router.get("/", getAllWalkingtrails);
+router.get("/:walkingtrailId", getWalkingtrailById);
 
-// router.post("/", isAuthenticated, createNewWalkingtrail);
+router.post("/", createNewWalkingtrail);
 // router.post("/:walkingtrailId/review", isAuthenticated, createNewReview);
 
-// router.delete("/:walkingtrailId", isAuthenticated, deleteWalkingtrailById);
+router.delete("/:walkingtrailId", deleteWalkingtrailById);
 
 module.exports = router;
