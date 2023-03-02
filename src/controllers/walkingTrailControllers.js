@@ -6,10 +6,10 @@ const { UnauthorizedError, NotFoundError } = require('../utils/errors')
 exports.getAllWalkingtrails = async (req, res) => {
     let query
     let options = {}
-    if (req.user.role === userRoles.ADMIN) {
+    if (req.user.role === userRoles.USER) {
         query = `
-      SELECT walkingtrail.walkingtrail_id AS walkingtrailId, walkingtrail.name, county.county_id AS countyId, county.name FROM walkingtrail 
-      LEFT JOIN county ON walkingtrail.fk_county_id = county.county_id
+        SELECT walkingtrail.walkingtrail_id AS walkingtrailId, walkingtrail.name, walkingtrail.location, walkingtrail.distance, walkingtrail.difficulty, walkingtrail.description , county.county_id AS countyId, county.name FROM walkingtrail 
+        LEFT JOIN county ON walkingtrail.fk_county_id = county.county_id;
     `
         // } if (req.user.role === userRoles.COUNTY) {
         //     query = `
@@ -37,14 +37,13 @@ exports.getWalkingtrailById = async (req, res) => {
 
     const [results, metadata] = await sequelize.query(
         `
-			SELECT wt.walkingtrail_id, walkingtrail.name, r.title, r.rating 
-			FROM walkingtrail wt 
-				LEFT JOIN review r ON r.fk_walkingtrail_id = wt.walkingtrail_id
-			WHERE wt.walkingtrail_id = $walkingtrialId;
+            SELECT walkingtrail.walkingtrail_id AS walkingtrailId, walkingtrail.name, walkingtrail.location, walkingtrail.distance, walkingtrail.difficulty, walkingtrail.description , county.county_id AS countyId, county.name FROM walkingtrail 
+            LEFT JOIN county ON walkingtrail.fk_county_id = county.county_id
+			WHERE walkingtrailId = ${walkingtrailId};
 		`,
-        {
-            bind: { walkingtrailId: walkingtrailId },
-        }
+        // {
+        //     bind: { walkingtrailId: walkingtrailId },
+        // }
     )
 
     if (!results || results.length == 0) {
@@ -65,67 +64,86 @@ exports.getWalkingtrailById = async (req, res) => {
 }
 
 exports.createNewWalkingtrail = async (req, res) => {
-    const { name } = req.body
+    // let query
+    // const { name } = req.body;
+    // if (req.user.role !== userRoles.USER) {
+    const walkingtrailName = req.body.walkingtrailName;
+    const walkingtrailLocation = req.body.walkingtrailLocation;
+    const countyName = req.body.countyName;
+    const walkingtrailDistance = req.body.walkingtrailDistance;
+    const walkingtrailDifficulty = req.body.walkingtrailDifficulty;
+    const walkingtrailDescription = req.body.walkingtrailDescription;
 
-    const [newWalkingtrailId] = await sequelize.query('INSERT INTO walkingtrail (name) VALUES ($walkingtrailName);', {
-        bind: { walkingtrailName: name },
-        type: QueryTypes.INSERT, // returns ID of created row
-    })
-
-    // prettier-ignore
-    await sequelize.query(`
-    INSERT INTO walkingtrail (fk_users_id, fk_lists_id, fk_roles_id) 
-    VALUES ($userId, $walkingtrailId, (SELECT role_id FROM role WHERE role = 'COUNTY')) 
-  `,
+    const [newWalkingtrailId] = await sequelize.query(`INSERT INTO walkingtrail (name, location, fk_county_id, distance, difficulty, description) 
+    VALUES ('${walkingtrailName}', '${walkingtrailLocation}', (SELECT county_id FROM county WHERE name = '${countyName}'), '${walkingtrailDistance}', '${walkingtrailDifficulty}', '${walkingtrailDescription}'); 
+    `,
         {
-            bind: {
-                userId: req.user.userId,
-                walkingtrialId: newWalkingtrailId,
-            },
-        }
-    )
+            // bind: { walkingtrailName: name },
+            type: QueryTypes.INSERT, // returns ID of created row
+        })
+
     // prettier-ignore
+    // await sequelize.query(`
+    //     INSERT INTO walkingtrail (name, location, fk_county_id, distance, difficulty, description) 
+    //     VALUES (${name}, ${walkingtrailLocation}, ${walkingtrailCountyId}, ${walkingtrailDistance}, ${walkingtrailDifficulty}, ${walkingtrailDescription}); 
+    //   `,
+    // {
+    //     bind: {
+    //         walkingtrailName: newWalkingtrailName,
+    //         walkingtrailLocation: newWalkingtrailLocation,
+    //         countyName: req.county.name,
+    //         walkingtrailDistance: newWalkingtrailDistance,
+    //         walkingtrailDifficulty: newWalkingtrailDifficulty,
+    //         walkingtrailDescription: walkingtrailDescription,
+    //     },
+    // }
+    // )
     return res
         .setHeader('Location', `${req.protocol}://${req.headers.host}/api/v1/walkingtrail/${newWalkingtrailId}`)
         .sendStatus(201)
+
+
+    // const [results, metadata] = await sequelize.query(query, options)
+
 }
 
+
 exports.deleteWalkingtrailById = async (req, res) => {
-    const walkingtrialId = req.params.walkingtrialId
+    const walkingtrialId = req.params.walkingtrailId;
 
-    if (req.user.role !== userRoles.ADMIN) {
-        const [userWalkingtrailRole, userWalkingtrailRoleMeta] = await sequelize.query(
-            `
-			SELECT r.role 
-			FROM user u
-				JOIN role r ON r.role_id = u.fk_role_id 
-			WHERE u.fk_lists_id = $listId AND fk_users_id = $userId 
-			LIMIT 1
-		`,
-            {
-                bind: { listId: listId, userId: req.user.userId },
-                type: QueryTypes.SELECT,
-            }
-        )
+    // if (req.user.role !== userRoles.USER) {
+    //     const [userWalkingtrailRole, userWalkingtrailRoleMeta] = await sequelize.query(
+    //         `
+    // 		SELECT r.role 
+    // 		FROM user u
+    // 			JOIN role r ON r.role_id = u.fk_role_id 
+    // 		WHERE u.fk_lists_id = $listId AND fk_users_id = $userId 
+    // 		LIMIT 1
+    // 	`,
+    //         // {
+    //         //     bind: { listId: listId, userId: req.user.userId },
+    //         //     type: QueryTypes.SELECT,
+    //         // }
+    //     )
 
-        if (!userWalkingtrailRole) {
-            throw new NotFoundError('We could not find the walkingtrail you are looking for')
-        }
+    //     // if (!userWalkingtrailRole) {
+    //     //     throw new NotFoundError('We could not find the walkingtrail you are looking for')
+    //     // }
 
-        // @ts-ignore
-        if (userWalkingtrailRole?.role !== userRoles.COUNTY || userRoles.ADMIN) {
-            throw new UnauthorizedError('You do not have permission to delete this walkingtrial')
-        }
-    }
+    //     // // @ts-ignore
+    //     // if (userWalkingtrailRole?.role !== userRoles.COUNTY || userRoles.ADMIN) {
+    //     //     throw new UnauthorizedError('You do not have permission to delete this walkingtrail')
+    //     // }
+    // }
 
-    await sequelize.query(`DELETE FROM Walkingtrail WHERE walkingtrail_id = $walkingtrailId;`, {
-        bind: { walkingtrailId: walkingtrailId },
+    await sequelize.query(`DELETE FROM walkingtrail WHERE walkingtrail_id = '${walkingtrialId}';`, {
+        // bind: { walkingtrailId: walkingtrailId },
         type: QueryTypes.DELETE,
     })
 
-    await sequelize.query(`DELETE FROM review WHERE fk_walkingtrail_id = $walkingtrailId;`, {
-        bind: { walkingtrailId: walkingtrailId },
-    })
+    // await sequelize.query(`DELETE FROM review WHERE fk_walkingtrail_id = $walkingtrailId;`, {
+    //     bind: { walkingtrailId: walkingtrailId },
+    // })
 
     // await sequelize.query(`DELETE FROM walkingtrail WHERE walkingttrail_id = $walkingtrailId;`, {
     //     bind: { walkingtrailId: walkingtrailId },
