@@ -12,8 +12,9 @@ const seedWalkingtrailsDb = async () => {
     // Drop tables if exist
     // await sequelize.query(`DROP TABLE IF EXISTS role;`);
     // await sequelize.query(`DROP TABLE IF EXISTS county;`);
-    // await sequelize.query(`DROP TABLE IF EXISTS user;`);run 
-    // await sequelize.query(`DROP TABLE IF EXISTS walkingtrail;`);
+    // await sequelize.query(`DROP TABLE IF EXISTS user;`);
+    // run;
+    // await sequelize.query(`DROP TABLE IF EXISTS user;`);
     // await sequelize.query(`DROP TABLE IF EXISTS review;`);
 
     // Create role table
@@ -74,8 +75,6 @@ const seedWalkingtrailsDb = async () => {
             FOREIGN KEY(fk_walkingtrail_id) REFERENCES walkingtrail(walkingtrail_id)
         );
         `);
-
-
 
     await sequelize.query(
       `INSERT INTO county (name) VALUES ('Stockholm'), ('Vasternorrland'), ('Abisko')`
@@ -144,18 +143,17 @@ const seedWalkingtrailsDb = async () => {
       (10, (SELECT user_id FROM user u WHERE name = 'Bob'), 'Kul men inte för mig', '2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words', 3, (SELECT walkingtrail_id FROM walkingtrail w WHERE name = 'Björkliden'))`
     );
 
-
-    // await sequelize.query(`INSERT INTO stores 
-    //       (store_name, address, fk_citys_id, fk_users_id) 
-    //       VALUES 
+    // await sequelize.query(`INSERT INTO stores
+    //       (store_name, address, fk_citys_id, fk_users_id)
+    //       VALUES
     //       ('Ica Supermarket Alvikstorg', 'Gustavslundsvägen 22', (SELECT id FROM citys c WHERE city_name = 'Stockholm'), 5),
     //       ('Lidl Göteborg', 'Kungsgatan 16', (SELECT id FROM citys c WHERE city_name = 'Göteborg'), 6),
-    //       ('Lidl Medborgarplatsen', 'Folkungagatan 51', (SELECT id FROM citys c WHERE city_name = 'Stockholm'), 5), 
-    //       ('Coop Hötorget', 'T-station Hötorget', (SELECT id FROM citys c WHERE city_name = 'Stockholm'), userid), 
+    //       ('Lidl Medborgarplatsen', 'Folkungagatan 51', (SELECT id FROM citys c WHERE city_name = 'Stockholm'), 5),
+    //       ('Coop Hötorget', 'T-station Hötorget', (SELECT id FROM citys c WHERE city_name = 'Stockholm'), userid),
     //       ('ICA Supermarket Majorna','Karl Johansgatan 21', (SELECT id FROM citys c WHERE city_name = 'Göteborg'), 7),
     //       ('Stora Coop Stadion','Stadiongatan 24', (SELECT id FROM citys c WHERE city_name = 'Malmö'), 5),
     //       ('Ica Supermarket Hansa',' Stora Nygatan', (SELECT id FROM citys c WHERE city_name = 'Malmö'), 6),
-    //       ('Hemköp Triangeln',' Södra Förstadsgatan 58',(SELECT id FROM citys c WHERE city_name = 'Malmö') , 7), 
+    //       ('Hemköp Triangeln',' Södra Förstadsgatan 58',(SELECT id FROM citys c WHERE city_name = 'Malmö') , 7),
     //       ('ICA Supermarket Olskroken',' Redbergsvägen 14', (SELECT id FROM citys c WHERE city_name = 'Göteborg'), 7),
     //       ('Coop Mölndalsvägen','Mölndalsvägen 1', (SELECT id FROM citys c WHERE city_name = 'Göteborg'), 6)`);
 
