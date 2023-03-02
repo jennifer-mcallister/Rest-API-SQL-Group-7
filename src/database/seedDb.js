@@ -12,7 +12,7 @@ const seedWalkingtrailsDb = async () => {
     // Drop tables if exist
     // await sequelize.query(`DROP TABLE IF EXISTS role;`);
     // await sequelize.query(`DROP TABLE IF EXISTS county;`);
-    // await sequelize.query(`DROP TABLE IF EXISTS user;`);run 
+    // await sequelize.query(`DROP TABLE IF EXISTS user;`); 
     // await sequelize.query(`DROP TABLE IF EXISTS walkingtrail;`);
     // await sequelize.query(`DROP TABLE IF EXISTS review;`);
 
@@ -132,32 +132,38 @@ const seedWalkingtrailsDb = async () => {
 
     await sequelize.query(
       `INSERT INTO review (fk_user_id, title, description, rating, fk_walkingtrail_id) VALUES 
-      ((SELECT user_id FROM user u WHERE name = 'Bob'), 'Måste testas!', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the', 5, (SELECT walkingtrail_id FROM walkingtrail w WHERE name = 'Sörmlandsleden')),
-      ((SELECT user_id FROM user u WHERE name = 'Frans'), 'Helt ok', '1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but', 3, (SELECT walkingtrail_id FROM walkingtrail w WHERE name = 'Roslagsleden')),
-      ((SELECT user_id FROM user u WHERE name = 'Karen'), 'UNDERBAR', 'Essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets', 5, (SELECT walkingtrail_id FROM walkingtrail w WHERE name = 'Upplandleden')),
-      ((SELECT user_id FROM user u WHERE name = 'Anna'), 'Vacker och behaglig', '1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem', 5, (SELECT walkingtrail_id FROM walkingtrail w WHERE name = 'Höga Kustenleden')),
-      ((SELECT user_id FROM user u WHERE name = 'Boss'), 'Jag gör inte om detta...', 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem', 2, (SELECT walkingtrail_id FROM walkingtrail w WHERE name = 'Rotsidan')),
-      ((SELECT user_id FROM user u WHERE name = 'Boss'), 'Bra men finns bättre', 'is that it has a more-or-less normal distribution of letters, as opposed to using "Content here, content here", making it look like readable', 4, (SELECT walkingtrail_id FROM walkingtrail w WHERE name = 'Helvetesbrännan')),
-      ((SELECT user_id FROM user u WHERE name = 'Karen'), 'Aldrig mer', 'Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for "lorem ipsum"', 0, (SELECT walkingtrail_id FROM walkingtrail w WHERE name = 'Rotenledet')),
-      ((SELECT user_id FROM user u WHERE name = 'Frans'), 'Jag är ingen vandringsperson...', 'will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpos', 1, (SELECT walkingtrail_id FROM walkingtrail w WHERE name = 'Höga Kustenleden')),
-      ((SELECT user_id FROM user u WHERE name = 'Anna'), 'Magiskt och lugnande', 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over', 5, (SELECT walkingtrail_id FROM walkingtrail w WHERE name = 'Kärkevagge')),
-      ((SELECT user_id FROM user u WHERE name = 'Bob'), 'Kul men inte för mig', '2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words', 3, (SELECT walkingtrail_id FROM walkingtrail w WHERE name = 'Björkliden'))`
+      ((SELECT user_id FROM user WHERE name = 'Bob'), 'Måste testas', 
+      'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the', 
+      5, (SELECT walkingtrail_id FROM walkingtrail WHERE name = 'Björkliden')),
+      ((SELECT user_id FROM user WHERE name = 'Frans'), 'Helt ok', 
+      'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the',
+      2, (SELECT walkingtrail_id FROM walkingtrail WHERE name = 'Roslagsleden')),
+      ((SELECT user_id FROM user WHERE name = 'Karen'), 'UNDERBAR', 
+      'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the', 
+      5, (SELECT walkingtrail_id FROM walkingtrail WHERE name = 'Höga Kustenleden')),
+      ((SELECT user_id FROM user WHERE name = 'Anna'), 'Vacker och behaglig', 
+      'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the', 
+      5, (SELECT walkingtrail_id FROM walkingtrail WHERE name = 'Höga Kustenleden')),
+      ((SELECT user_id FROM user WHERE name = 'Bob'), 'Jag gör inte om detta..', 
+      'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the', 
+      5, (SELECT walkingtrail_id FROM walkingtrail WHERE name = 'Rotsidan')),
+      ((SELECT user_id FROM user WHERE name = 'Boss'), 'Bra men finns bättre.', 
+      'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the', 
+      5, (SELECT walkingtrail_id FROM walkingtrail WHERE name = 'Helvetesbrännan')),
+      ((SELECT user_id FROM user WHERE name = 'Karen'), 'Aldrig mer.', 
+      'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the', 
+      5, (SELECT walkingtrail_id FROM walkingtrail WHERE name = 'Rotenleden')),
+      ((SELECT user_id FROM user WHERE name = 'Frans'), 'Jag är ingen vandringsperson..', 
+      'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the', 
+      5, (SELECT walkingtrail_id FROM walkingtrail WHERE name = 'Kärkevagge')),
+      ((SELECT user_id FROM user WHERE name = 'Anna'), 'Magiskt och lugnande..', 
+      'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the', 
+      5, (SELECT walkingtrail_id FROM walkingtrail WHERE name = 'Upplandsleden')),
+      ((SELECT user_id FROM user WHERE name = 'Karen'), 'Kul men inte för mig!', 
+      'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the', 
+      5, (SELECT walkingtrail_id FROM walkingtrail WHERE name = 'Helvetesbrännan')) `
     );
 
-
-    // await sequelize.query(`INSERT INTO stores 
-    //       (store_name, address, fk_citys_id, fk_users_id) 
-    //       VALUES 
-    //       ('Ica Supermarket Alvikstorg', 'Gustavslundsvägen 22', (SELECT id FROM citys c WHERE city_name = 'Stockholm'), 5),
-    //       ('Lidl Göteborg', 'Kungsgatan 16', (SELECT id FROM citys c WHERE city_name = 'Göteborg'), 6),
-    //       ('Lidl Medborgarplatsen', 'Folkungagatan 51', (SELECT id FROM citys c WHERE city_name = 'Stockholm'), 5), 
-    //       ('Coop Hötorget', 'T-station Hötorget', (SELECT id FROM citys c WHERE city_name = 'Stockholm'), userid), 
-    //       ('ICA Supermarket Majorna','Karl Johansgatan 21', (SELECT id FROM citys c WHERE city_name = 'Göteborg'), 7),
-    //       ('Stora Coop Stadion','Stadiongatan 24', (SELECT id FROM citys c WHERE city_name = 'Malmö'), 5),
-    //       ('Ica Supermarket Hansa',' Stora Nygatan', (SELECT id FROM citys c WHERE city_name = 'Malmö'), 6),
-    //       ('Hemköp Triangeln',' Södra Förstadsgatan 58',(SELECT id FROM citys c WHERE city_name = 'Malmö') , 7), 
-    //       ('ICA Supermarket Olskroken',' Redbergsvägen 14', (SELECT id FROM citys c WHERE city_name = 'Göteborg'), 7),
-    //       ('Coop Mölndalsvägen','Mölndalsvägen 1', (SELECT id FROM citys c WHERE city_name = 'Göteborg'), 6)`);
 
     console.log("Database successfully populated with data");
   } catch (error) {
