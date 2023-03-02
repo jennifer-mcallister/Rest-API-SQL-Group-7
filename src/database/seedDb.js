@@ -75,8 +75,6 @@ const seedWalkingtrailsDb = async () => {
         );
         `);
 
-
-
     await sequelize.query(
       `INSERT INTO county (name) VALUES ('Stockholm'), ('Vasternorrland'), ('Abisko')`
     );
