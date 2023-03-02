@@ -130,6 +130,20 @@ const seedWalkingtrailsDb = async () => {
       Lättillgänglig terräng med varierande höjdskillnader')`
     );
 
+    await sequelize.query(
+      `INSERT INTO review (review_id, fk_user_id, title, description, rating, fk_walkingtrail_id) VALUES 
+      ('1', (SELECT user_id FROM user WHERE name = 'Bob'), 'Måste testas!', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the', 5, (SELECT walkingtrail_id FROM walkingtrail WHERE name = 'Sörmlandsleden')),
+      (2, (SELECT user_id FROM user WHERE name = 'Frans'), 'Helt ok', '1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but', 3, (SELECT walkingtrail_id FROM walkingtrail WHERE name = 'Roslagsleden')),
+      (3, (SELECT user_id FROM user WHERE name = 'Karen'), 'UNDERBAR', 'Essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets', 5, (SELECT walkingtrail_id FROM walkingtrail)),
+      (4, (SELECT user_id FROM user WHERE name = 'Anna'), 'Vacker och behaglig', '1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem', 5, (SELECT walkingtrail_id FROM walkingtrail WHERE name = 'Upplandsleden')),
+      (5, (SELECT user_id FROM user WHERE name = 'Boss'), 'Jag gör inte om detta...', 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem', 2, (SELECT walkingtrail_id FROM walkingtrail WHERE name= 'Rotsidan')),
+      (6, (SELECT user_id FROM user WHERE name = 'Boss'), 'Jag gör inte om detta...', 'is that it has a more-or-less normal distribution of letters, as opposed to using "Content here, content here", making it look like readable', 4, (SELECT walkingtrail_id FROM walkingtrail WHERE name= 'Helvetesbrännan')),
+      (7, (SELECT user_id FROM user WHERE name = 'Karen'), 'Aldrig mer', 'Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for "lorem ipsum"', 0, (SELECT walkingtrail_id FROM walkingtrail WHERE name= 'Rotenledet')),
+      (8, (SELECT user_id FROM user WHERE name = 'Frans'), 'Jag är ingen vandringsperson...', 'will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpos', 1, (SELECT walkingtrail_id FROM walkingtrail WHERE name= 'Höga Kustenleden')),
+      (9, (SELECT user_id FROM user WHERE name = 'Anna'), 'Magiskt och lugnande', 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over', 5, (SELECT walkingtrail_id FROM walkingtrail WHERE name= 'Kärkevagge')),
+      (10, (SELECT user_id FROM user WHERE name = 'Bob'), 'Kul men inte för mig','2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words', 3, (SELECT walkingtrail_id FROM walkingtrail WHERE name= 'Björkliden'))`
+    );
+
 
     // await sequelize.query(`INSERT INTO stores 
     //       (store_name, address, fk_citys_id, fk_users_id) 
