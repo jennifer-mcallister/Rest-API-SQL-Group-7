@@ -9,6 +9,14 @@ exports.registerSchema = [
     .withMessage(
       "You must provide a password that is at least 6 characters long"
     ),
+  body("user")
+    .not()
+    .isEmpty()
+    .isLength({ min: 5, max: 50 })
+    .withMessage(
+      "You must provide a username between 5 and 50 characters long"
+    ),
+  //behöver kolla om vi behöver denna user
 ];
 
 exports.loginSchema = [
