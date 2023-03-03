@@ -94,20 +94,39 @@ const seedWalkingtrailsDb = async () => {
       `INSERT INTO role (role) VALUES ('ADMIN'), ('COUNTY'), ('USER')`
     );
 
+    // BOB password
+    const passwordBob = "secret";
+    const newPasswordBob = await createHashedPassword(passwordBob);
+    const newPasswordBobHash = newPasswordBob
 
+    // FRANS password 
+    const passwordFrans = "secret";
+    const newPasswordFrans = await createHashedPassword(passwordFrans);
+    const newPasswordFransHash = newPasswordFrans
+
+    // KAREN password
+    const passwordKaren = "secret";
+    const newPasswordKaren = await createHashedPassword(passwordKaren);
+    const newPasswordKarenHash = newPasswordKaren
+
+    // BOSS password
     const passwordAdmin = "123";
     const newPasswordAdmin = await createHashedPassword(passwordAdmin);
     const newPasswordAdminHash = newPasswordAdmin
-    console.log(newPasswordAdminHash)
+
+    // ANNA password 
+    const passwordAnna = "secret";
+    const newPasswordAnna = await createHashedPassword(passwordAnna);
+    const newPasswordAnnaHash = newPasswordAnna
 
 
     await sequelize.query(
       `INSERT INTO user (name, description, email, password, fk_role_id) VALUES 
-            ('Bob', 'Big fan of nature', 'bobby123@mail.com', 'secret', (SELECT role_id FROM role r WHERE role = 'USER')), 
-            ('Frans', 'Forest lover', 'forest_frans@mail.com', 'secret', (SELECT role_id FROM role r WHERE role = 'USER')),
-            ('Karen', 'Mother nature', 'karen@mail.com', 'secret', (SELECT role_id FROM role r WHERE role = 'COUNTY')),
+            ('Bob', 'Big fan of nature', 'bobby123@mail.com', '${newPasswordBobHash}', (SELECT role_id FROM role r WHERE role = 'USER')), 
+            ('Frans', 'Forest lover', 'forest_frans@mail.com', '${newPasswordFransHash}', (SELECT role_id FROM role r WHERE role = 'USER')),
+            ('Karen', 'Mother nature', 'karen@mail.com', '${newPasswordKarenHash}', (SELECT role_id FROM role r WHERE role = 'COUNTY')),
             ('Boss', 'Big Boss', 'boss@mail.com', '${newPasswordAdminHash}', (SELECT role_id FROM role r WHERE role = 'ADMIN')),
-            ('Anna', 'Love camping all year around', 'anna_maja@mail.com', 'secret', (SELECT role_id FROM role r WHERE role = 'USER'))
+            ('Anna', 'Love camping all year around', 'anna_maja@mail.com', '${newPasswordAnnaHash}', (SELECT role_id FROM role r WHERE role = 'USER'))
             `,
     );
 
