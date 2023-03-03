@@ -57,11 +57,25 @@ exports.login = async (req, res) => {
 
   // Check if user with that email exits in db
   // prettier-ignore
-  const [user, metadata] = await sequelize.query(
-		'SELECT * FROM user WHERE email = $email LIMIT 1;', {
-		bind: { email },
-		type: QueryTypes.SELECT
-	})
+  // const [user, metadata] = await sequelize.query(
+	// 	'SELECT * FROM user WHERE email = $email LIMIT 1;', {
+	// 	bind: { email },
+	// 	type: QueryTypes.SELECT
+	// })
+
+const [user] = await sequelize.query(
+  `
+  SELECT user.email, user.password, role.role_id, role.role AS role
+  FROM user
+  LEFT JOIN role ON user.fk_role_id  = role.role_id
+  WHERE user.email = $email
+  LIMIT 1
+  `,
+  {
+    	bind: { email },
+    	type: QueryTypes.SELECT
+    }
+)
 
   console.log(user);
 
@@ -81,7 +95,7 @@ exports.login = async (req, res) => {
     userId: user.id,
     // @ts-ignore
     email: user.email,
-    role: user["is_admin"] === 1 ? userRoles.ADMIN : userRoles.USER,
+    role: user.role
   };
 
   // Create the JWT token
