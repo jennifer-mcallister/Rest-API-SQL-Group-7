@@ -4,6 +4,7 @@ const { walkingtrails } = require("./mockData/walkingTrails");
 const { users } = require("./mockData/users");
 const { countys } = require("./mockData/countys");
 const { roles } = require("./mockData/roles");
+const bcrypt = require("bcrypt");
 
 const seedWalkingtrailsDb = async () => {
   try {
@@ -81,14 +82,15 @@ const seedWalkingtrailsDb = async () => {
     await sequelize.query(
       `INSERT INTO role (role) VALUES ('ADMIN'), ('COUNTY'), ('USER')`
     );
-
+    const passwordAdmin = "secret";
+    const newPasswordAdmin = createHashedPassword(passwordAdmin);
     await sequelize.query(
       `INSERT INTO user (name, description, email, password, fk_role_id) VALUES 
-            ('Bob', 'Big fan of nature', 'bobby123@mail.com', 'secret', (SELECT role_id FROM role r WHERE role = 'USER')), 
-            ('Frans', 'Forest lover', 'forest_frans@mail.com', 'secret', (SELECT role_id FROM role r WHERE role = 'USER')),
-            ('Karen', 'Mother nature', 'karen@mail.com', 'secret', (SELECT role_id FROM role r WHERE role = 'COUNTY')),
-            ('Boss', 'Big Boss', 'boss@mail.com', 'secret', (SELECT role_id FROM role r WHERE role = 'ADMIN')),
-            ('Anna', 'Love camping all year around', 'anna_maja@mail.com', 'secret', (SELECT role_id FROM role r WHERE role = 'USER'))`
+            ('Bob', 'Big fan of nature', 'bobby123@mail.com', 'password', (SELECT role_id FROM role r WHERE role = 'USER')), 
+            ('Frans', 'Forest lover', 'forest_frans@mail.com', 'password', (SELECT role_id FROM role r WHERE role = 'USER')),
+            ('Karen', 'Mother nature', 'karen@mail.com', 'password', (SELECT role_id FROM role r WHERE role = 'COUNTY')),
+            ('Boss', 'Big Boss', 'boss@mail.com', ${newPasswordAdmin}, (SELECT role_id FROM role r WHERE role = 'ADMIN')),
+            ('Anna', 'Love camping all year around', 'anna_maja@mail.com', 'password', (SELECT role_id FROM role r WHERE role = 'USER'))`
     );
 
     await sequelize.query(
@@ -170,5 +172,10 @@ const seedWalkingtrailsDb = async () => {
     process.exit(0);
   }
 };
+const createHashedPassword = async (password) => {
+  const salt = await bcrypt.genSalt(10);
+  const hashedpassword = await bcrypt.hash(password, salt);
 
+  return hashedpassword;
+};
 seedWalkingtrailsDb();
