@@ -5,8 +5,7 @@ const { users } = require("./mockData/users");
 const { countys } = require("./mockData/countys");
 const { roles } = require("./mockData/roles");
 const bcrypt = require("bcrypt");
-<<<<<<< HEAD
-=======
+
 
 const createHashedPassword = async (password) => {
   try {
@@ -18,7 +17,7 @@ const createHashedPassword = async (password) => {
     console.log(err)
   }
 }
->>>>>>> 7dc6cae9ce19f68021e49e47b21645407939b58f
+
 
 const seedWalkingtrailsDb = async () => {
   try {
@@ -131,7 +130,6 @@ const seedWalkingtrailsDb = async () => {
             ('Boss', 'Big Boss', 'boss@mail.com', '${newPasswordAdminHash}', (SELECT role_id FROM role r WHERE role = 'ADMIN')),
             ('Anna', 'Love camping all year around', 'anna_maja@mail.com', '${newPasswordAnnaHash}', (SELECT role_id FROM role r WHERE role = 'USER'))
             `,
->>>>>>> 7dc6cae9ce19f68021e49e47b21645407939b58f
     );
 
     await sequelize.query(
