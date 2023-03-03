@@ -44,9 +44,9 @@ exports.createNewReview = async (req, res) => {
     const walkingtrailName = req.body.walkingtrailName;
 
 
-const [newReviewId] = await sequelize.query(`INSERT INTO review (fk_user_id, title, description, rating, fk_walkingtrail_id)
-VALUES ((SELECT user_id FROM user WHERE name = '${userName}'), '${reviewTitle}', '${reviewDescription}', '${reviewRating}', (SELECT walkingtrail_id FROM walkingtrail WHERE name = '${walkingtrailName}'));
-`,
+    const [newReviewId] = await sequelize.query(`INSERT INTO review (fk_user_id, title, description, rating, fk_walkingtrail_id)
+    VALUES ((SELECT user_id FROM user WHERE name = '${userName}'), '${reviewTitle}', '${reviewDescription}', '${reviewRating}', (SELECT walkingtrail_id FROM walkingtrail WHERE name = '${walkingtrailName}'));
+    `,
     {
         type: QueryTypes.INSERT,
     })
@@ -59,24 +59,47 @@ return res
 
 exports.updateReviewById = async (req, res) => {
     const reviewId = req.params.reviewId
+    const userId = req.body.userId;
     const reviewTitle = req.body.reviewTitle;
     const reviewDescription = req.body.reviewDescription;
     const reviewRating = req.body.reviewRating;
 
+
+
+    const [reviewResponse] = await sequelize.query(
+        `
+        SELECT review.review_id AS reviewId, review.fk_user_id AS userId
+        FROM review
+        WHERE reviewId = $reviewId AND review.fk_user_id = $userId;
+        `,
+        {
+            bind: { reviewId: reviewId, userId: userId },
+            type: QueryTypes.SELECT,
+        }
+    )
+
+    if (!reviewResponse || reviewResponse.length == 0) {
+        throw new NotFoundError('We could not find the review you are looking for')
+    }
+
+    if(reviewResponse?.userId !== userId) {
+        throw new UnauthorizedError('You do not have permission to delete this list')
+    }
+
     if (reviewTitle) {
-        await sequelize.query( `
+        await sequelize.query(`
         UPDATE review
         SET title = '${reviewTitle}'
-        WHERE review.review_id = ${reviewId};
-    `
-    ) 
+        WHERE review.review_id = ${reviewId} AND review.fk_user_id = ${userId};
+        `,
+        )
     }
     
     if (reviewDescription) {
         await sequelize.query( `
         UPDATE review
         SET description = '${reviewDescription}'
-        WHERE review.review_id = ${reviewId};
+        WHERE review.review_id = ${reviewId} AND fk_user_id = ${userId};
     `
     ) 
     }
@@ -85,7 +108,7 @@ exports.updateReviewById = async (req, res) => {
         await sequelize.query( `
         UPDATE review
         SET rating = '${reviewRating}'
-        WHERE review.review_id = ${reviewId};
+        WHERE review.review_id = ${reviewId} AND fk_user_id = ${userId};
     `
     ) 
     }
