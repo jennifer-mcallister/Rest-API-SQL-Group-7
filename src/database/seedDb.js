@@ -5,20 +5,6 @@ const { users } = require("./mockData/users");
 const { countys } = require("./mockData/countys");
 const { roles } = require("./mockData/roles");
 const bcrypt = require("bcrypt");
-<<<<<<< HEAD
-=======
-
-const createHashedPassword = async (password) => {
-  try {
-    console.log("trying to hash")
-  const salt = await bcrypt.genSalt(10);
-  const hashedpassword = await bcrypt.hash(password, salt);
-  return hashedpassword;
-  } catch (err) {
-    console.log(err)
-  }
-}
->>>>>>> 7dc6cae9ce19f68021e49e47b21645407939b58f
 
 const seedWalkingtrailsDb = async () => {
   try {
@@ -97,29 +83,18 @@ const seedWalkingtrailsDb = async () => {
       `INSERT INTO role (role) VALUES ('ADMIN'), ('COUNTY'), ('USER')`
     );
 
-
     const passwordAdmin = "123";
     const newPasswordAdmin = await createHashedPassword(passwordAdmin);
-    const newPasswordAdminHash = newPasswordAdmin
-    console.log(newPasswordAdminHash)
-
+    const newPasswordAdminHash = newPasswordAdmin;
+    console.log(newPasswordAdminHash);
 
     await sequelize.query(
       `INSERT INTO user (name, description, email, password, fk_role_id) VALUES 
-<<<<<<< HEAD
             ('Bob', 'Big fan of nature', 'bobby123@mail.com', 'password', (SELECT role_id FROM role r WHERE role = 'USER')), 
             ('Frans', 'Forest lover', 'forest_frans@mail.com', 'password', (SELECT role_id FROM role r WHERE role = 'USER')),
             ('Karen', 'Mother nature', 'karen@mail.com', 'password', (SELECT role_id FROM role r WHERE role = 'COUNTY')),
             ('Boss', 'Big Boss', 'boss@mail.com', 'password', (SELECT role_id FROM role r WHERE role = 'ADMIN')),
             ('Anna', 'Love camping all year around', 'anna_maja@mail.com', 'password', (SELECT role_id FROM role r WHERE role = 'USER'))`
-=======
-            ('Bob', 'Big fan of nature', 'bobby123@mail.com', 'secret', (SELECT role_id FROM role r WHERE role = 'USER')), 
-            ('Frans', 'Forest lover', 'forest_frans@mail.com', 'secret', (SELECT role_id FROM role r WHERE role = 'USER')),
-            ('Karen', 'Mother nature', 'karen@mail.com', 'secret', (SELECT role_id FROM role r WHERE role = 'COUNTY')),
-            ('Boss', 'Big Boss', 'boss@mail.com', '${newPasswordAdminHash}', (SELECT role_id FROM role r WHERE role = 'ADMIN')),
-            ('Anna', 'Love camping all year around', 'anna_maja@mail.com', 'secret', (SELECT role_id FROM role r WHERE role = 'USER'))
-            `,
->>>>>>> 7dc6cae9ce19f68021e49e47b21645407939b58f
     );
 
     await sequelize.query(
@@ -201,7 +176,5 @@ const seedWalkingtrailsDb = async () => {
     process.exit(0);
   }
 };
-
-;
 
 seedWalkingtrailsDb();
