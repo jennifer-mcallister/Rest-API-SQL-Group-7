@@ -6,7 +6,7 @@ const { UnauthorizedError, NotFoundError } = require('../utils/errors')
 exports.getAllWalkingtrails = async (req, res) => {
     const [results, metadata] = await sequelize.query(`
         SELECT walkingtrail.walkingtrail_id AS walkingtrailId, walkingtrail.name, walkingtrail.location, walkingtrail.distance, walkingtrail.difficulty, walkingtrail.description , county.county_id AS countyId, county.name FROM walkingtrail 
-        LEFT JOIN county ON walkingtrail.fk_county_id = county.county_id;
+        LEFT JOIN county ON walkingtrail.fk_county_id = county.county_id LIMIT 10;
     `)
 
     return res.json(results)
@@ -19,7 +19,7 @@ exports.getWalkingtrailById = async (req, res) => {
         `
             SELECT walkingtrail.walkingtrail_id AS walkingtrailId, walkingtrail.name, walkingtrail.location, walkingtrail.distance, walkingtrail.difficulty, walkingtrail.description , county.county_id AS countyId, county.name FROM walkingtrail 
             LEFT JOIN county ON walkingtrail.fk_county_id = county.county_id
-			WHERE walkingtrailId = $walkingtrailId;
+			WHERE walkingtrailId = $walkingtrailId LIMIT 10;
 		`,
         {
             bind: { walkingtrailId: walkingtrailId },
