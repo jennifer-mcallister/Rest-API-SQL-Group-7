@@ -31,7 +31,7 @@ exports.errorMiddleware = (error, req, res, next) => {
     )} field, please choose another value`
     customError.statusCode = 400
   }
-	*/
+	*/ //---------------FRÅGA PETTER OM PRETTIER!!---------------------
 
   if (error.name === "CastError") {
     customError.message = `No item found with id : ${error.value}`;
