@@ -1,9 +1,4 @@
 const { sequelize } = require("./config");
-const { reviews } = require("./mockData/reviews");
-const { walkingtrails } = require("./mockData/walkingTrails");
-const { users } = require("./mockData/users");
-const { countys } = require("./mockData/countys");
-const { roles } = require("./mockData/roles");
 const bcrypt = require("bcrypt");
 
 const createHashedPassword = async (password) => {
@@ -78,7 +73,7 @@ const seedWalkingtrailsDb = async () => {
             fk_user_id INTEGER NOT NULL,
             title TEXT NOT NULL,
             description TEXT,
-            rating INTEGER NOT NULL,
+            rating INTEGER NOT NULL CHECK (rating IN (1, 2, 3, 4, 5)),
             fk_walkingtrail_id INTEGER NOT NULL,
 
             FOREIGN KEY(fk_user_id) REFERENCES user(user_id),
