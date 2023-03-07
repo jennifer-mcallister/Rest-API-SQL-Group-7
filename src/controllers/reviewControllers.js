@@ -215,7 +215,9 @@ exports.deleteReviewById = async (req, res) => {
         },
         )
 
-    return res.sendStatus(204)
+    return res
+    .json('review was succesfully deleted')
+    .sendStatus(204)
 }
 
    

@@ -114,13 +114,37 @@ const seedWalkingtrailsDb = async () => {
     const newPasswordAnna = await createHashedPassword(passwordAnna);
     const newPasswordAnnaHash = newPasswordAnna;
 
+    // MAY-BRITT password
+    const passwordMaybritt = "secret";
+    const newPasswordMaybritt = await createHashedPassword(passwordMaybritt);
+    const newPasswordMaybrittHash = newPasswordMaybritt;
+
+    // STOCKHOLM password
+    const passwordStockholm = "secret";
+    const newPasswordStockholm = await createHashedPassword(passwordStockholm);
+    const newPasswordStockholmHash = newPasswordStockholm;
+
+    // VÄSTERNORRLAND password
+    const passwordVasternorrland = "secret";
+    const newPasswordVasternorrland  = await createHashedPassword(passwordVasternorrland);
+    const newPasswordVasternorrlandHash = newPasswordVasternorrland ;
+
+    // ABISKO password
+    const passwordAbisko = "secret";
+    const newPasswordAbisko  = await createHashedPassword(passwordAbisko);
+    const newPasswordAbiskoHash = newPasswordAbisko ;
+
     await sequelize.query(
       `INSERT INTO user (name, description, email, password, fk_role_id) VALUES 
             ('Bob', 'Big fan of nature', 'bobby123@mail.com', '${newPasswordBobHash}', (SELECT role_id FROM role r WHERE role = 'USER')), 
             ('Frans', 'Forest lover', 'forest_frans@mail.com', '${newPasswordFransHash}', (SELECT role_id FROM role r WHERE role = 'USER')),
-            ('Karen', 'Mother nature', 'karen@mail.com', '${newPasswordKarenHash}', (SELECT role_id FROM role r WHERE role = 'COUNTY')),
+            ('Karen', 'Mother nature', 'karen@mail.com', '${newPasswordKarenHash}', (SELECT role_id FROM role r WHERE role = 'USER')),
+            ('May-Britt', 'Gillar bilar och TV', 'brittan@mail.com', '${newPasswordMaybrittHash}', (SELECT role_id FROM role r WHERE role = 'USER')),
             ('Boss', 'Big Boss', 'boss@mail.com', '${newPasswordAdminHash}', (SELECT role_id FROM role r WHERE role = 'ADMIN')),
-            ('Anna', 'Love camping all year around', 'anna_maja@mail.com', '${newPasswordAnnaHash}', (SELECT role_id FROM role r WHERE role = 'USER'))
+            ('Anna', 'Love camping all year around', 'anna_maja@mail.com', '${newPasswordAnnaHash}', (SELECT role_id FROM role r WHERE role = 'USER')),
+            ('Stockholm', 'Stockholm kommun', 'stockholm@mail.com', '${newPasswordStockholmHash}', (SELECT role_id FROM role r WHERE role = 'COUNTY')),
+            ('Västernorrland', 'Västernorrland län', 'vasternorrland@mail.com', '${newPasswordVasternorrlandHash}', (SELECT role_id FROM role r WHERE role = 'COUNTY')),
+            ('Abisko', 'Abisko', 'abisko@mail.com', '${newPasswordAbiskoHash}', (SELECT role_id FROM role r WHERE role = 'COUNTY'))
             `
     );
 
@@ -162,38 +186,76 @@ const seedWalkingtrailsDb = async () => {
 
     await sequelize.query(
       `INSERT INTO review (fk_user_id, title, description, rating, fk_walkingtrail_id) VALUES 
-      ((SELECT user_id FROM user WHERE name = 'Bob'), 'Måste testas', 
-      'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the', 
+      ((SELECT user_id FROM user WHERE name = 'Frans'), 'Björkälskare titta hit!', 
+      'Det här är paradiset för den som älskar Björkar. Tips! Ta med hängmatta och stormkök och koka dig själv lite Björkbladste', 
       5, (SELECT walkingtrail_id FROM walkingtrail WHERE name = 'Björkliden')),
-      ((SELECT user_id FROM user WHERE name = 'Frans'), 'Helt ok', 
-      'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the',
+      ((SELECT user_id FROM user WHERE name = 'Frans'), 'Häftigt ställe', 
+      'Otrolig miljö, men ta med ficklampa!',
       2, (SELECT walkingtrail_id FROM walkingtrail WHERE name = 'Roslagsleden')),
-      ((SELECT user_id FROM user WHERE name = 'Karen'), 'UNDERBAR', 
-      'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the', 
-      5, (SELECT walkingtrail_id FROM walkingtrail WHERE name = 'Höga Kustenleden')),
+      ((SELECT user_id FROM user WHERE name = 'Frans'), 'UNDERBAR', 
+      'Fin natur och roliga utmaningar. Sjöng Ronja Rövardotter låten på Slåttdalsskrevan, varmt rekommenderat!', 
+      4, (SELECT walkingtrail_id FROM walkingtrail WHERE name = 'Höga Kustenleden')),
       ((SELECT user_id FROM user WHERE name = 'Anna'), 'Vacker och behaglig', 
-      'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the', 
+      'Så mysigt <3 Kommer gå den här igen! Wow <3 ', 
       5, (SELECT walkingtrail_id FROM walkingtrail WHERE name = 'Höga Kustenleden')),
-      ((SELECT user_id FROM user WHERE name = 'Bob'), 'Jag gör inte om detta..', 
-      'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the', 
-      5, (SELECT walkingtrail_id FROM walkingtrail WHERE name = 'Rotsidan')),
+      ((SELECT user_id FROM user WHERE name = 'May-Britt'), 'Nej', 
+      'Fanns ingen toa.', 
+      1, (SELECT walkingtrail_id FROM walkingtrail WHERE name = 'Rotsidan')),
       ((SELECT user_id FROM user WHERE name = 'Boss'), 'Bra men finns bättre.', 
-      'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the', 
+      'Bra vandringsled.', 
       5, (SELECT walkingtrail_id FROM walkingtrail WHERE name = 'Helvetesbrännan')),
       ((SELECT user_id FROM user WHERE name = 'Karen'), 'Aldrig mer.', 
-      'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the', 
+      'Fett najs ställe! Grillade korv på berget sen hitta jag en ring som lös i elden så jag tog med mig den hem.', 
       5, (SELECT walkingtrail_id FROM walkingtrail WHERE name = 'Rotenleden')),
-      ((SELECT user_id FROM user WHERE name = 'Frans'), 'Jag är ingen vandringsperson..', 
-      'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the', 
-      5, (SELECT walkingtrail_id FROM walkingtrail WHERE name = 'Kärkevagge')),
-      ((SELECT user_id FROM user WHERE name = 'Anna'), 'Magiskt och lugnande..', 
-      'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the', 
+      ((SELECT user_id FROM user WHERE name = 'Boss'), 'Fin natur', 
+      'Naturen är fin. Bra vägar. Lugnt och väldigt rent, men det började regna och jag hade inget parapaly', 
+      1, (SELECT walkingtrail_id FROM walkingtrail WHERE name = 'Kärkevagge')),
+      ((SELECT user_id FROM user WHERE name = 'Frans'), 'Helt okej', 
+      'Hade velat ha mer skog, men bra vägar och skyltat', 
       5, (SELECT walkingtrail_id FROM walkingtrail WHERE name = 'Upplandsleden')),
       ((SELECT user_id FROM user WHERE name = 'Karen'), 'Kul men inte för mig!', 
-      'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the', 
-      5, (SELECT walkingtrail_id FROM walkingtrail WHERE name = 'Helvetesbrännan')) `
+      'Någon borde ta bort den där dimmen, kunde jue inte se nånting. Dålig service.', 
+      5, (SELECT walkingtrail_id FROM walkingtrail WHERE name = 'Helvetesbrännan')),
+      ((SELECT user_id FROM user WHERE name = 'Karen'), 'Dålig service.', 
+      'Tyckte inte att det var så värst organiserat, skulle gärna vilja prata med managern', 
+      1, (SELECT walkingtrail_id FROM walkingtrail WHERE name = 'Sörmlandsleden')),
+      ((SELECT user_id FROM user WHERE name = 'Anna'), 'Jättebra för nybörjar', 
+      'Så mysigt med skog och sånt, prova cafét i byn 10/10. Inte jättekul att bli biten av en mås, annars hade det varit 5 stjärnor från mig. Kärlek <3', 
+      4, (SELECT walkingtrail_id FROM walkingtrail WHERE name = 'Sörmlandsleden')),
+      ((SELECT user_id FROM user WHERE name = 'Boss'), 'Bra', 
+      'Den va bra.', 
+      5, (SELECT walkingtrail_id FROM walkingtrail WHERE name = 'Sörmlandsleden')),
+      ((SELECT user_id FROM user WHERE name = 'Bob'), 'GRYMT VANDRINGSLED', 
+      'Helt sjukt! Hittade massa stenar som stod i en cirkel, sen låg det en hjälm och nån slags yxa där, så jag tog med mig den hem! Nu ska det skäras kött och dricka hembränt.',
+      5, (SELECT walkingtrail_id FROM walkingtrail WHERE name = 'Roslagsleden')),
+      ((SELECT user_id FROM user WHERE name = 'Anna'), 'Så fint', 
+      'Sååå fint, kunde verkligen känna naturen i kroppen och finna mitt inre ro. Blev dock lite förskräckt när jag såg en man springa in skogan med en yxa, men lite härligt ändå med energifyllda själar',
+      4, (SELECT walkingtrail_id FROM walkingtrail WHERE name = 'Roslagsleden')),
+      ((SELECT user_id FROM user WHERE name = 'Karen'), 'Såg döden i ögonen', 
+      'Idag såg jag döden i ögonen, men jag överlevde. Jag gick längs grusvägen upp till runstenarna och där stod ett spöke. Han plocka upp en yxa och skrek. Han tänkte döda mig, men jag använda mina spirituellakrafter för att jaga honom in skogen. Jag är en survivor',
+      4, (SELECT walkingtrail_id FROM walkingtrail WHERE name = 'Roslagsleden')),
+      ((SELECT user_id FROM user WHERE name = 'May-Britt'), 'Dåligt', 
+      'Man fick inte röka, dåligt.', 
+      1, (SELECT walkingtrail_id FROM walkingtrail WHERE name = 'Upplandsleden')),
+      ((SELECT user_id FROM user WHERE name = 'Bob'), 'Najs ställe', 
+      'Träffade nån brud vid en bro, försökte ragga upp henne men hon skrek bara, så jag drog vidare. Men det var najs ändå, knäckte en öl och åt blåbär.', 
+      3, (SELECT walkingtrail_id FROM walkingtrail WHERE name = 'Upplandsleden')),
+      ((SELECT user_id FROM user WHERE name = 'May-Britt'), 'Bra', 
+      'Den fanns en bar. Vin 50kr.', 
+      4, (SELECT walkingtrail_id FROM walkingtrail WHERE name = 'Rotsidan')),
+      ((SELECT user_id FROM user WHERE name = 'Anna'), 'Så underbart, wow!', 
+      'Oj va fint! Tog med mig min fiol och spelade lite folkmusik vid en sjö. Kunde verkligen känna mig ett med naturen. Kärlek <3 ', 
+      5, (SELECT walkingtrail_id FROM walkingtrail WHERE name = 'Rotsidan')),
+      ((SELECT user_id FROM user WHERE name = 'Bob'), 'Jag gör inte om detta..', 
+      'Hitta ingenting kul. Fanns bara skog och vatten. Saknar min yxa.', 
+      1, (SELECT walkingtrail_id FROM walkingtrail WHERE name = 'Rotsidan')), 
+      ((SELECT user_id FROM user WHERE name = 'Anna'), 'Asså wow', 
+      'Wow, känner mig som en ny person. Mitt spiritanimal lever verkligen nu <3', 
+      5, (SELECT walkingtrail_id FROM walkingtrail WHERE name = 'Kärkevagge'))
+       `
     );
-
+    
+    
     console.log("Database successfully populated with data");
   } catch (error) {
     // Log any eventual errors to Terminal
