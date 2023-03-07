@@ -7,7 +7,8 @@ This is a group assignment that involved designing a database using SQL and crea
 - SQL (MySQL)
 - Node.js (Express.js)
 - REST API
-# Preview 
+
+# Preview
 
 ![databasdesign](https://user-images.githubusercontent.com/113436760/223411922-8f252084-5631-4a1c-8735-fa244567c1da.png)
 
@@ -48,7 +49,7 @@ JWT_SECRET=XXXX
 | USER        | EMAIL                 | PASSWORD |
 | ----------- | --------------------- | -------- |
 | Boss(ADMIN) | boss@mail.com         | 123      |
-| Bob(USER)   | bobby123@mail.com     | secret   |
+| Bob(COUNTY) | bobby123@mail.com     | secret   |
 | Frans(USER) | forest_frans@mail.com | secret   |
 | Karen(USER) | karen@mail.com        | secret   |
-| Anna(USER)  | anna_maja@mail.com    | secret   |
+| Anna(ADMIN) | anna_maja@mail.com    | secret   |
