@@ -29,12 +29,12 @@ app.use((req, res, next) => {
 /* ---------------------------------------------- */
 /* ------------ Security Middleware ------------- */
 /* ---------------------------------------------- */
-// app.use(
-//   cors(/* {
-// 		origin: ['http://localhost:3000'],
-// 		methods: ['GET', 'PUT', 'PATCH', 'DELETE', 'POST'],
-// 	} */) // cors är vad som är tillåtet att göra på denna host med endast dessa metoder
-// );
+app.use(
+  cors({
+    origin: ["http://localhost:3000"],
+    methods: ["GET", "PUT", "PATCH", "DELETE", "POST"],
+  }) // cors är vad som är tillåtet att göra på denna host med endast dessa metoder
+);
 app.use(xss());
 // app.use(mongoSanitize());
 app.use(
