@@ -5,7 +5,7 @@ const { QueryTypes } = require("sequelize");
 
 exports.getAllUsers = async (req, res) => {
   // prettier-ignore
-  const [users, metadata] = await sequelize.query('SELECT user_id, email FROM users')
+  const [users, metadata] = await sequelize.query('SELECT user_id, email FROM user')
   return res.json(users);
 };
 
