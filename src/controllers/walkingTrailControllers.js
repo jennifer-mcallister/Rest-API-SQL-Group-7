@@ -19,7 +19,7 @@ exports.getWalkingtrailById = async (req, res) => {
         `
             SELECT walkingtrail.walkingtrail_id AS walkingtrailId, walkingtrail.name, walkingtrail.location, walkingtrail.distance, walkingtrail.difficulty, walkingtrail.description , county.county_id AS countyId, county.name FROM walkingtrail 
             LEFT JOIN county ON walkingtrail.fk_county_id = county.county_id
-			WHERE walkingtrailId = $walkingtrailId LIMIT 10;
+			WHERE walkingtrailId = $walkingtrailId LIMIT 1;
 		`,
         {
             bind: { walkingtrailId: walkingtrailId },
@@ -137,7 +137,8 @@ exports.deleteWalkingtrailById = async (req, res) => {
             throw new NotFoundError('We could not find the walkingtrail you are looking for')
         }
 
-        await sequelize.query(`DELETE FROM walkingtrail WHERE walkingtrail_id = $walkingtrailId;`, {
+        await sequelize.query(`DELETE FROM walkingtrail WHERE walkingtrail_id = $walkingtrailId
+        LIMIT 1;`, {
             bind: { walkingtrailId: walkingtrailId },
             type: QueryTypes.DELETE,
         })
