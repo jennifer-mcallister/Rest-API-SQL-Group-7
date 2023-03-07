@@ -2,6 +2,10 @@
 
 This is a group assignment that involved designing a database using SQL and creating a REST API to interact with it. The project aimed to create a simple database to manage walkingtrails and reviews in a walkingtrail site, and then use the REST API to allow users to interact with the database.
 
+# Preview
+![databasdesign](https://user-images.githubusercontent.com/113436760/223370541-7b21c17c-f3b4-4cff-877f-01efe4ad389b.png)
+
+
 # Technologies used
 
 - SQL (MySQL)
