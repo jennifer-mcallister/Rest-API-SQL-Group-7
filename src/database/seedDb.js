@@ -136,12 +136,12 @@ const seedWalkingtrailsDb = async () => {
 
     await sequelize.query(
       `INSERT INTO user (name, description, email, password, fk_role_id) VALUES 
-            ('Bob', 'Big fan of nature', 'bobby123@mail.com', '${newPasswordBobHash}', (SELECT role_id FROM role r WHERE role = 'USER')), 
-            ('Frans', 'Forest lover', 'forest_frans@mail.com', '${newPasswordFransHash}', (SELECT role_id FROM role r WHERE role = 'USER')),
-            ('Karen', 'Mother nature', 'karen@mail.com', '${newPasswordKarenHash}', (SELECT role_id FROM role r WHERE role = 'USER')),
+            ('Bob', 'Stort fan av naturen', 'bobby123@mail.com', '${newPasswordBobHash}', (SELECT role_id FROM role r WHERE role = 'USER')), 
+            ('Frans', 'Skogsälskare', 'forest_frans@mail.com', '${newPasswordFransHash}', (SELECT role_id FROM role r WHERE role = 'USER')),
+            ('Karen', 'Moder Natur', 'karen@mail.com', '${newPasswordKarenHash}', (SELECT role_id FROM role r WHERE role = 'USER')),
             ('May-Britt', 'Gillar bilar och TV', 'brittan@mail.com', '${newPasswordMaybrittHash}', (SELECT role_id FROM role r WHERE role = 'USER')),
             ('Boss', 'Big Boss', 'boss@mail.com', '${newPasswordAdminHash}', (SELECT role_id FROM role r WHERE role = 'ADMIN')),
-            ('Anna', 'Love camping all year around', 'anna_maja@mail.com', '${newPasswordAnnaHash}', (SELECT role_id FROM role r WHERE role = 'USER')),
+            ('Anna', 'Älskar att campa året runt', 'anna_maja@mail.com', '${newPasswordAnnaHash}', (SELECT role_id FROM role r WHERE role = 'USER')),
             ('Stockholm', 'Stockholm kommun', 'stockholm@mail.com', '${newPasswordStockholmHash}', (SELECT role_id FROM role r WHERE role = 'COUNTY')),
             ('Västernorrland', 'Västernorrland län', 'vasternorrland@mail.com', '${newPasswordVasternorrlandHash}', (SELECT role_id FROM role r WHERE role = 'COUNTY')),
             ('Abisko', 'Abisko', 'abisko@mail.com', '${newPasswordAbiskoHash}', (SELECT role_id FROM role r WHERE role = 'COUNTY'))
