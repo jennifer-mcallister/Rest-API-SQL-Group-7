@@ -45,7 +45,7 @@ exports.createNewWalkingtrail = async (req, res) => {
         const walkingtrailDescription = req.body.walkingtrailDescription;
 
         const [newWalkingtrailId] = await sequelize.query(`INSERT INTO walkingtrail (name, location, fk_county_id, distance, difficulty, description) 
-        VALUES ('$walkingtrailName', '$walkingtrailLocation', (SELECT county_id FROM county WHERE name = '$countyName'), '$walkingtrailDistance', '$walkingtrailDifficulty', '$walkingtrailDescription}'); 
+        VALUES ($walkingtrailName, $walkingtrailLocation, (SELECT county_id FROM county WHERE name = $countyName), $walkingtrailDistance, $walkingtrailDifficulty, $walkingtrailDescription); 
     `,
             {
                 bind: {
@@ -73,7 +73,7 @@ exports.updateWalkintrailById = async (req, res) => {
 
         const walkingtrailId = req.params.walkingtrailId;
 
-        const [walkingtrailToUpdate, walkingtrailMeta] = await sequelize.query(`
+        await sequelize.query(`
         SELECT * FROM walkingtrail WHERE walkingtrail_id = $walkingtrailId
         `,
             {
@@ -90,7 +90,7 @@ exports.updateWalkintrailById = async (req, res) => {
         const walkingtrailDifficulty = req.body.walkingtrailDifficulty;
         const walkingtrailDescription = req.body.walkingtrailDescription;
 
-        const [updateWalkingtrail, metadata] = await sequelize.query(
+        await sequelize.query(
             `
                     UPDATE walkingtrail SET name = $walkingtrailName, location = $walkingtrailLocation, fk_county_id = (SELECT county_id FROM county WHERE name = $countyName), distance = $walkingtrailDistance, difficulty = $walkingtrailDifficulty, description = $walkingtrailDescription 
                     WHERE walkingtrail_id = $walkingtrailId RETURNING *;
@@ -108,7 +108,7 @@ exports.updateWalkintrailById = async (req, res) => {
                 type: QueryTypes.UPDATE,
             }
         );
-        return res.json(updateWalkingtrail)
+        return res.json("Successfullt updated walking trail!");
 
     } else {
         throw new UnauthorizedError('You do not have permission for this action!')
@@ -118,14 +118,14 @@ exports.updateWalkintrailById = async (req, res) => {
 
 exports.deleteWalkingtrailById = async (req, res) => {
 
-    const walkingtrialId = req.params.walkingtrailId;
+    const walkingtrailId = req.params.walkingtrailId;
 
     if (req.user.role !== userRoles.USER) {
 
-        const [walkingtrailId, metadata] = await sequelize.query(
+        await sequelize.query(
             `
     		SELECT * FROM walkingtrail WHERE walkingtrail_id = $walkingtrailId
-    		LIMIT 1
+    		LIMIT 1;
     	    `,
             {
                 bind: { walkingtrailId: walkingtrailId },
@@ -137,7 +137,7 @@ exports.deleteWalkingtrailById = async (req, res) => {
             throw new NotFoundError('We could not find the walkingtrail you are looking for')
         }
 
-        await sequelize.query(`DELETE FROM walkingtrail WHERE walkingtrail_id = $walkingtrialId;`, {
+        await sequelize.query(`DELETE FROM walkingtrail WHERE walkingtrail_id = $walkingtrailId;`, {
             bind: { walkingtrailId: walkingtrailId },
             type: QueryTypes.DELETE,
         })
@@ -147,7 +147,7 @@ exports.deleteWalkingtrailById = async (req, res) => {
             type: QueryTypes.DELETE,
         })
 
-        return res.sendStatus(204)
+        return res.sendStatus(204);
 
     } else {
         throw new UnauthorizedError('You do not have permission to delete this walkingtrail')
