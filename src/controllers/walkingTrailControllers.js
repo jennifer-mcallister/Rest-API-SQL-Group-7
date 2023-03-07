@@ -81,7 +81,7 @@ exports.updateWalkintrailById = async (req, res) => {
                     walkingtrailId: walkingtrailId,
                 },
                 type: QueryTypes.SELECT,
-            }),
+            });
 
         const walkingtrailName = req.body.walkingtrailName;
         const walkingtrailLocation = req.body.walkingtrailLocation;
