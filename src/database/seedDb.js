@@ -161,18 +161,18 @@ const seedWalkingtrailsDb = async () => {
       ('Upplandsleden', 'Vid mystiska dalen', (SELECT county_id FROM county c WHERE name = 'Stockholm'), 234, 'MEDIUM',
       'Den berömda Upplandsleden, känd för sina hemsökta platser där den skrikande damen kan skymtas. Akta er för att passera Balders bro 
       vid midnatt för att undvika damen i vit klänning. Framkomligheten är därför anpassad för de med nerver av stål.'),
-      ('Höga Kustenleden', 'Vid berget', (SELECT county_id FROM county c WHERE name = 'Vasternorrland'), 129, 'HARD',
+      ('Höga Kustenleden', 'Vid berget', (SELECT county_id FROM county c WHERE name = 'Västernorrland'), 129, 'HARD',
       'En vandring för den med bättre fysik, här finns snabba höjningar och varierande terräng. 
       För den som däremot orkar ta sig förbi detta väntar otroliga miljöer, där vi har en sjö uppe på berget. 
       Varför inte se den berömda Slåttdalsskrevan det sägs att Ronja Rövardotter spelades in? (Vilket den inte gjorde)'),
-      ('Rotsidan', 'Vid roten av roten', (SELECT county_id FROM county c WHERE name = 'Vasternorrland'), 211, 'EASY',
+      ('Rotsidan', 'Vid roten av roten', (SELECT county_id FROM county c WHERE name = 'Västernorrland'), 211, 'EASY',
       'En trevlig och lagom lång vandring med många härliga etapper. Framkomligheten är bra och passar de flesta som kan röra sig framåt. 
       En del av vandringen går genom städer men för det mesta är det skog. Bra med vatten och vindskydd, skyltar finns ofta till dessa'),
-      ('Helvetesbrännan', 'Vid Mordor', (SELECT county_id FROM county c WHERE name = 'Vasternorrland'), 666, 'HARD',
+      ('Helvetesbrännan', 'Vid Mordor', (SELECT county_id FROM county c WHERE name = 'Västernorrland'), 666, 'HARD',
       'Utmaningen för den uthållige och mest tålige våghalsen. Ledet som kommer bränna dig hur mycket solskydd du än har. 
       Förutom myggen kanske bergsvärmen ställer till det för er campingplats. 
       Bortser ni från detta är det en relativt trevlig vandring med många etapper. Krävs ett gott humör!'),
-      ('Rotenleden', 'Vid andra roten', (SELECT county_id FROM county c WHERE name = 'Vasternorrland'), 221, 'MEDIUM',
+      ('Rotenleden', 'Vid andra roten', (SELECT county_id FROM county c WHERE name = 'Västernorrland'), 221, 'MEDIUM',
       'Ett led för den mest adlige! Förutom sin turistäta ansamling kan man umgås med mygg från våtmarken, 
       se vår berömda Kebnekaise eller bara njuta av den svenska fjällen. Varmt rekommenderad!'),
       ('Kungsleden', 'Vid monarkens led', (SELECT county_id FROM county c WHERE name = 'Abisko'), 1235, 'MEDIUM',
