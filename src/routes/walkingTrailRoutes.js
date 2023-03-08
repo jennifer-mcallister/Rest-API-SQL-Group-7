@@ -5,7 +5,7 @@ const {
   getAllWalkingtrails,
   getWalkingtrailById,
   createNewWalkingtrail,
-  updateWalkintrailById,
+  updateWalkingtrailById,
   deleteWalkingtrailById,
 } = require("../controllers/walkingTrailControllers");
 // const { createNewReview } = require("../controllers/reviewControllers");
@@ -13,7 +13,7 @@ const {
 router.get("/", isAuthenticated, getAllWalkingtrails);
 router.get("/:walkingtrailId", isAuthenticated, getWalkingtrailById);
 router.post("/", isAuthenticated, createNewWalkingtrail);
-router.post("/:walkingtrailId/", isAuthenticated, updateWalkintrailById);
+router.put("/:walkingtrailId", isAuthenticated, updateWalkingtrailById);
 router.delete("/:walkingtrailId", isAuthenticated, deleteWalkingtrailById);
 
 module.exports = router;

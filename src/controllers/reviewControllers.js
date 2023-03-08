@@ -41,7 +41,28 @@ exports.getReviewById = async (req, res) => {
 
 	return res.json(results)
 }
+exports.getReviewByWalkingtrail = async (req, res) => {
+    const walkingtrailName = req.params.walkingtrailName;
 
+	const [results] = await sequelize.query(
+		`
+			SELECT review.review_id, user.user_id, user.name AS user, review.title, review.description, review.rating, walkingtrail.walkingtrail_id, walkingtrail.name AS walkingtrail
+			FROM review 
+            LEFT JOIN user ON review.fk_user_id = user.user_id
+            LEFT JOIN walkingtrail ON review.fk_walkingtrail_id = walkingtrail.walkingtrail_id
+            WHERE walkingtrail = $walkingtrailName
+            LIMIT 10
+		`,
+        {
+            bind: { walkingtrailName: walkingtrailName},
+            type: QueryTypes.SELECT,
+        }
+	)
+
+    console.log(results.length)
+
+    return res.json(results)
+}
 exports.createNewReview = async (req, res) => {
     const userName = req.body.userName;
     const reviewTitle = req.body.title;
@@ -68,17 +89,17 @@ exports.createNewReview = async (req, res) => {
 
 exports.updateReviewById = async (req, res) => {
     const reviewId = req.params.reviewId
-    const userId = req.body.userId;
     const reviewTitle = req.body.title;
-    const reviewDescription = req.body.description || "";
+    const reviewDescription = req.body.description;
     const reviewRating = req.body.rating;
 
 
     if ( req.user.role !== userRoles.COUNTY) {
         const [review] = await sequelize.query(
             `
-            SELECT review.review_id AS reviewId
+            SELECT review.review_id AS reviewId, review.fk_user_id as userId, user.name AS userName
             FROM review
+            LEFT JOIN user ON userId = user.user_id
             WHERE reviewId = $reviewId;
             LIMIT 1
             `,
@@ -92,23 +113,8 @@ exports.updateReviewById = async (req, res) => {
             throw new NotFoundError('We could not find the review you are looking for')
         }
 
-        if (req.user.role === userRoles.USER) {
-            const [user] = await sequelize.query(
-                `
-                SELECT review.review_id AS reviewId, review.fk_user_id AS userId
-                FROM review
-                WHERE reviewId = $reviewId AND review.fk_user_id = $userId;
-                LIMIT 1
-                `,
-                {
-                    bind: { reviewId: reviewId, userId: userId },
-                    type: QueryTypes.SELECT,
-                }
-            )
-            
-            if(user?.userId !== userId) {
-                throw new UnauthorizedError('You do not have permission to updated this review')
-            }
+        if (req.user.name !== review.userName) {
+            throw new UnauthorizedError('You do not have permission to update this review')
         }
     
     } else {
@@ -159,15 +165,14 @@ exports.updateReviewById = async (req, res) => {
 }
 
 exports.deleteReviewById = async (req, res) => {
-
         const reviewId = req.params.reviewId
-        const userId = req.body.userId;
 
         if ( req.user.role !== userRoles.COUNTY) {
             const [review] = await sequelize.query(
                 `
-                SELECT review.review_id AS reviewId
+                SELECT review.review_id AS reviewId, review.fk_user_id as userId, user.name AS userName
                 FROM review
+                LEFT JOIN user ON userId = user.user_id
                 WHERE reviewId = $reviewId;
                 LIMIT 1
                 `,
@@ -181,38 +186,22 @@ exports.deleteReviewById = async (req, res) => {
                 throw new NotFoundError('We could not find the review you are looking for')
             }
 
-            if (req.user.role === userRoles.USER) {
-                const [user] = await sequelize.query(
-                    `
-                    SELECT review.review_id AS reviewId, review.fk_user_id AS userId
-                    FROM review
-                    WHERE reviewId = $reviewId AND review.fk_user_id = $userId;
-                    LIMIT 1
-                    `,
-                    {
-                        bind: { reviewId: reviewId, userId: userId },
-                        type: QueryTypes.SELECT,
-                    }
-                )
-                
-                if(user?.userId !== userId) {
-                    throw new UnauthorizedError('You do not have permission to delete this review')
-                }
+            if (req.user.name !== review.userName) {
+                throw new UnauthorizedError('You do not have permission to delete this review')
             }
-        
+          
         } else {
             throw new UnauthorizedError('You do not have permission to delete reviews')
         }
         
-    
         await sequelize.query(`
             DELETE FROM review 
             WHERE review_id = $reviewId;
-        `,
-        {
-            bind: { reviewId: reviewId },
-            type: QueryTypes.DELETE,
-        },
+            `,
+            {
+                bind: { reviewId: reviewId },
+                type: QueryTypes.DELETE,
+            },
         )
 
     return res

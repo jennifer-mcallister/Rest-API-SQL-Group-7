@@ -65,7 +65,7 @@ exports.login = async (req, res) => {
 
 const [user] = await sequelize.query(
   `
-  SELECT user.email, user.password, role.role_id, role.role AS role
+  SELECT user.email, user.password, role.role_id, role.role AS role, user.name
   FROM user
   LEFT JOIN role ON user.fk_role_id  = role.role_id
   WHERE user.email = $email
@@ -95,7 +95,8 @@ const [user] = await sequelize.query(
     userId: user.id,
     // @ts-ignore
     email: user.email,
-    role: user.role
+    role: user.role,
+    name: user.name
   };
 
   // Create the JWT token

@@ -37,184 +37,171 @@ exports.getWalkingtrailById = async (req, res) => {
 };
 
 exports.createNewWalkingtrail = async (req, res) => {
-    if (req.user.role !== userRoles.USER) {
-        const walkingtrailName = req.body.walkingtrailName;
-        const walkingtrailLocation = req.body.walkingtrailLocation;
-        const countyName = req.body.countyName;
-        const walkingtrailDistance = req.body.walkingtrailDistance;
-        const walkingtrailDifficulty = req.body.walkingtrailDifficulty;
-        const walkingtrailDescription = req.body.walkingtrailDescription;
+    const walkingtrailName = req.body.walkingtrail;
+    const walkingtrailLocation = req.body.location || "Finns ingen angiven plats";
+    const countyName = req.body.county;
+    const walkingtrailDistance = req.body.distance || 0;
+    const walkingtrailDifficulty = req.body.difficulty || "UNKNOWN";
+    const walkingtrailDescription = req.body.description || "Finns ingen beskrivning";
 
-        const [newWalkingtrailId] = await sequelize.query(
-            `
-                INSERT INTO walkingtrail (name, location, fk_county_id, distance, difficulty, description) 
-                VALUES ($walkingtrailName, $walkingtrailLocation, (SELECT county_id FROM county WHERE name = $countyName), $walkingtrailDistance, $walkingtrailDifficulty, $walkingtrailDescription); 
-            `,
-            {
-                bind: {
-                    walkingtrailName: walkingtrailName,
-                    walkingtrailLocation: walkingtrailLocation,
-                    countyName: countyName,
-                    walkingtrailDistance: walkingtrailDistance,
-                    walkingtrailDifficulty: walkingtrailDifficulty,
-                    walkingtrailDescription: walkingtrailDescription,
-                },
-                type: QueryTypes.INSERT,
-            }
-        );
-        return res
-            .setHeader(
-                "Location",
-                `${req.protocol}://${req.headers.host}/api/v1/walkingtrail/${newWalkingtrailId}`
-            )
-            .sendStatus(201);
-    } else {
-        throw new UnauthorizedError("You do not have permission for this action!");
+    if ( req.user.role === userRoles.USER) {
+        throw new UnauthorizedError('You do not have permission to create a walkingtrail')
     }
-};
+    
+    const [county] = await sequelize.query(
+        `
+        SELECT county.name AS countyName
+        FROM county
+        WHERE countyName = $countyName;
+        LIMIT 1
+        `,
+        {
+            bind: { countyName: countyName},
+            type: QueryTypes.SELECT,
+        }
+    )
+    
+    if (!county || county.length == 0) {
+        throw new NotFoundError('County do not exists. Please enter an existing county')
+    }
 
-exports.updateWalkintrailById = async (req, res) => {
+    if (req.user.role === userRoles.COUNTY && req.user.name !== countyName) {
+        throw new UnauthorizedError('You do not have permission to create walkingtrail for this county')
+    }
 
-    if (req.user.role !== userRoles.USER) {
-        const walkingtrailId = req.params.walkingtrailId;
-        const walkingtrailName = req.body.walkingtrailName;
-        const walkingtrailLocation = req.body.walkingtrailLocation;
-        // const countyName = req.body.countyName;
-        const walkingtrailDistance = req.body.walkingtrailDistance;
-        const walkingtrailDifficulty = req.body.walkingtrailDifficulty;
-        const walkingtrailDescription = req.body.walkingtrailDescription;
+    const [walkingtrail] = await sequelize.query(
+        `
+        SELECT walkingtrail.name AS walkingtrailName
+        FROM walkingtrail
+        WHERE walkingtrailName = $walkingtrailName;
+        LIMIT 1
+        `,
+        {
+            bind: { walkingtrailName: walkingtrailName},
+            type: QueryTypes.SELECT,
+        }
+    )
+    
+    if (walkingtrail) {
+        throw new UnauthorizedError("Walkingtrail already exists, please enter an other name for your walkingtrail")
+    }
 
+    const [newWalkingtrail] = await sequelize.query(`INSERT INTO walkingtrail (name, location, fk_county_id, distance, difficulty, description)
+    VALUES ($walkingtrailName, $walkingtrailLocation, (SELECT county_id FROM county WHERE name = $countyName), $walkingtrailDistance, $walkingtrailDifficulty, $walkingtrailDescription);
+    `,
+    {
+        bind: { walkingtrailName: walkingtrailName, walkingtrailLocation: walkingtrailLocation, countyName: countyName, walkingtrailDistance: walkingtrailDistance, walkingtrailDifficulty: walkingtrailDifficulty, walkingtrailDescription: walkingtrailDescription },
+        type: QueryTypes.INSERT,
+    })
+ 
+    return res
+        .setHeader('Location', `${req.protocol}://${req.headers.host}/api/v1/walkingtrail/${newWalkingtrail}`)
+        .sendStatus(201)
+}
+
+exports.updateWalkingtrailById = async (req, res) => {
+    const walkingtrailId = req.params.walkingtrailId;
+    const walkingtrailName = req.body.walkingtrail;
+    const walkingtrailLocation = req.body.location;
+    const walkingtrailDistance = req.body.distance;
+    const walkingtrailDifficulty = req.body.difficulty;
+    const walkingtrailDescription = req.body.description;
+
+    if ( req.user.role !== userRoles.USER) {
         const [walkingtrail] = await sequelize.query(
             `
-                SELECT * FROM walkingtrail WHERE walkingtrail_id = $walkingtrailId LIMIT 1;
+            SELECT  walkingtrail.walkingtrail_id as walkingtrailId, walkingtrail.fk_county_id as countyId, county.name AS countyName
+            FROM walkingtrail
+            LEFT JOIN county ON countyId = county.county_id
+            WHERE walkingtrailId = $walkingtrailId;
+            LIMIT 1
             `,
             {
-                bind: {
-                    walkingtrailId: walkingtrailId,
-                },
+                bind: { walkingtrailId: walkingtrailId },
                 type: QueryTypes.SELECT,
             }
-        );
+        )
 
-        if (!walkingtrail) {
-            throw new NotFoundError(
-                "We could not find the walking trail you are looking for"
-            );
+        if (!walkingtrail || walkingtrail.length == 0) {
+            throw new NotFoundError('We could not find the walkingtrail you are looking for')
         }
 
-        if (walkingtrailName) {
-            await sequelize.query(
-                `
-            UPDATE walkingtrail SET name = $walkingtrailName
-            WHERE walkingtrail.walkingtrail_id = $walkingtrailId; 
-        `,
-
-                {
-                    bind: {
-                        walkingtrailId: walkingtrailId,
-                        walkingtrailName: walkingtrailName,
-                    },
-                    type: QueryTypes.UPDATE,
-                }
-            );
+        if (req.user.role === userRoles.COUNTY && req.user.name !== walkingtrail.countyName) {
+            throw new UnauthorizedError('You do not have permission to update walkingtrail for this county')
         }
-
-        if (walkingtrailLocation) {
-            await sequelize.query(
-                `
-                UPDATE walkingtrail SET location = $walkingtrailLocation
-                WHERE walkingtrail.walkingtrail_id = $walkingtrailId; 
-            `,
-
-                {
-                    bind: {
-                        walkingtrailId: walkingtrailId,
-                        walkingtrailLocation: walkingtrailLocation,
-                    },
-                    type: QueryTypes.UPDATE,
-                }
-            );
-        }
-        // if (countyName) {
-        //     await sequelize.query(
-        //         `
-        //         UPDATE walkingtrail SET fk_county_id = (SELECT county_id FROM county WHERE name = $countyName)
-        //         WHERE walkingtrail.walkingtrail_id = $walkingtrailId; 
-        //     `,
-
-        //         {
-        //             bind: {
-        //                 walkingtrailId: walkingtrailId,
-        //                 countyName: countyName,
-        //             },
-        //             type: QueryTypes.UPDATE,
-        //         }
-        //     );
-        // }
-
-        // if (!countyName) {
-        //     throw new NotFoundError(
-        //         "We could not find the walking trail you are looking for"
-        //     );
-        // }
-
-        if (walkingtrailDistance) {
-            await sequelize.query(
-                `
-            UPDATE walkingtrail SET distance = $walkingtrailDistance
-            WHERE walkingtrail.walkingtrail_id = $walkingtrailId; 
-        `,
-
-                {
-                    bind: {
-                        walkingtrailId: walkingtrailId,
-                        walkingtrailDistance: walkingtrailDistance,
-                    },
-                    type: QueryTypes.UPDATE,
-                }
-            );
-        }
-
-        if (walkingtrailDifficulty) {
-            await sequelize.query(
-                `
-            UPDATE walkingtrail SET difficulty = $walkingtrailDifficulty
-            WHERE walkingtrail.walkingtrail_id = $walkingtrailId; 
-        `,
-
-                {
-                    bind: {
-                        walkingtrailId: walkingtrailId,
-                        walkingtrailDifficulty: walkingtrailDifficulty,
-                    },
-                    type: QueryTypes.UPDATE,
-                }
-            );
-        }
-
-        if (walkingtrailDescription) {
-            await sequelize.query(
-                `
-            UPDATE walkingtrail SET description = $walkingtrailDescription
-            WHERE walkingtrail.walkingtrail_id = $walkingtrailId; 
-        `,
-
-                {
-                    bind: {
-                        walkingtrailId: walkingtrailId,
-                        walkingtrailDescription: walkingtrailDescription,
-                    },
-                    type: QueryTypes.UPDATE,
-                }
-            );
-        }
-
-        return res.json("Walking trail was successfully updated");
 
     } else {
-        throw new UnauthorizedError("You do not have permission for this action!");
+
+        throw new UnauthorizedError('You do not have permission to updated walkingtrails')
     }
-};
+
+    if (walkingtrailName) {
+        await sequelize.query(`
+        UPDATE walkingtrail
+        SET name = $walkingtrailName
+        WHERE walkingtrail.walkingtrail_id = $walkingtrailId;
+        `,
+        {
+            bind: { walkingtrailName: walkingtrailName, walkingtrailId: walkingtrailId },
+            type: QueryTypes.UPDATE,
+        },
+        )
+    }
+
+    if (walkingtrailLocation) {
+        await sequelize.query(`
+        UPDATE walkingtrail
+        SET location = $walkingtrailLocation
+        WHERE walkingtrail.walkingtrail_id = $walkingtrailId;
+        `,
+        {
+            bind: { walkingtrailLocation: walkingtrailLocation, walkingtrailId: walkingtrailId },
+            type: QueryTypes.UPDATE,
+        },
+        )
+    }
+
+    if (walkingtrailDistance) {
+        await sequelize.query(`
+        UPDATE walkingtrail
+        SET distance = $walkingtrailDistance
+        WHERE walkingtrail.walkingtrail_id = $walkingtrailId;
+        `,
+        {
+            bind: { walkingtrailDistance: walkingtrailDistance, walkingtrailId: walkingtrailId },
+            type: QueryTypes.UPDATE,
+        },
+        )
+    }
+
+    if (walkingtrailDifficulty) {
+        await sequelize.query(`
+        UPDATE walkingtrail
+        SET difficulty = $walkingtrailDifficulty
+        WHERE walkingtrail.walkingtrail_id = $walkingtrailId;
+        `,
+        {
+            bind: { walkingtrailDifficulty: walkingtrailDifficulty, walkingtrailId: walkingtrailId },
+            type: QueryTypes.UPDATE,
+        },
+        )
+    }
+
+    if (walkingtrailDescription) {
+        await sequelize.query(`
+        UPDATE walkingtrail
+        SET description = $walkingtrailDescription
+        WHERE walkingtrail.walkingtrail_id = $walkingtrailId;
+        `,
+        {
+            bind: { walkingtrailDescription: walkingtrailDescription, walkingtrailId: walkingtrailId },
+            type: QueryTypes.UPDATE,
+        },
+        )
+    }
+
+    return res.json("walkingtrail was succesfully updated")
+}
 
 exports.deleteWalkingtrailById = async (req, res) => {
     const walkingtrailId = req.params.walkingtrailId;
