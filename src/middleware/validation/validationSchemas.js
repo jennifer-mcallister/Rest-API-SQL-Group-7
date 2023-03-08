@@ -12,7 +12,7 @@ exports.registerSchema = [
   body("user")
     .not()
     .isEmpty()
-    .isLength({ min: 5, max: 50 })
+    .isLength({ min: 4, max: 50 })
     .withMessage(
       "You must provide a username between 5 and 50 characters long"
     ),

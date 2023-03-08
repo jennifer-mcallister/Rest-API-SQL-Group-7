@@ -82,7 +82,7 @@ const seedWalkingtrailsDb = async () => {
         `);
 
     await sequelize.query(
-      `INSERT INTO county (name) VALUES ('Stockholm'), ('Vasternorrland'), ('Abisko')`
+      `INSERT INTO county (name) VALUES ('Stockholm'), ('Västernorrland'), ('Abisko')`
     );
 
     await sequelize.query(
@@ -126,13 +126,15 @@ const seedWalkingtrailsDb = async () => {
 
     // VÄSTERNORRLAND password
     const passwordVasternorrland = "secret";
-    const newPasswordVasternorrland  = await createHashedPassword(passwordVasternorrland);
-    const newPasswordVasternorrlandHash = newPasswordVasternorrland ;
+    const newPasswordVasternorrland = await createHashedPassword(
+      passwordVasternorrland
+    );
+    const newPasswordVasternorrlandHash = newPasswordVasternorrland;
 
     // ABISKO password
     const passwordAbisko = "secret";
-    const newPasswordAbisko  = await createHashedPassword(passwordAbisko);
-    const newPasswordAbiskoHash = newPasswordAbisko ;
+    const newPasswordAbisko = await createHashedPassword(passwordAbisko);
+    const newPasswordAbiskoHash = newPasswordAbisko;
 
     await sequelize.query(
       `INSERT INTO user (name, description, email, password, fk_role_id) VALUES 
@@ -254,8 +256,7 @@ const seedWalkingtrailsDb = async () => {
       5, (SELECT walkingtrail_id FROM walkingtrail WHERE name = 'Kärkevagge'))
        `
     );
-    
-    
+
     console.log("Database successfully populated with data");
   } catch (error) {
     // Log any eventual errors to Terminal
