@@ -7,9 +7,8 @@ exports.getAllCounties = async (req, res) => {
     let query
     let options = {}
     query = `
-      SELECT county.county_id, county.name, walkingtrail.fk_county_id
-      FROM county 
-      LEFT JOIN county ON walkingtrail.fk_county_id = county.county_id
+      SELECT county.name
+      FROM county
       LIMIT 10;
     `
     const [results] = await sequelize.query(query, options)
@@ -21,9 +20,8 @@ exports.getCountyById = async (req, res) => {
 
     const [results] = await sequelize.query(
         `
-            SELECT county.county_id, county.name, walkingtrail.fk_county_id
-            FROM county 
-            LEFT JOIN county ON walkingtrail.fk_county_id = county.county_id
+            SELECT county.county_id, county.name
+            FROM county
             WHERE county.county_id = $countyId
             LIMIT 1;
 		`,
@@ -48,7 +46,7 @@ exports.createNewCounty = async (req, res) => {
         throw new UnauthorizedError('You do not have permission to create a review')
     }
 
-    const [newCountyId] = await sequelize.query(`INSERT INTO County (name)
+    const [newCountyId] = await sequelize.query(`INSERT INTO county (name)
     VALUES ($name);
     `,
         {
