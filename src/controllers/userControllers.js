@@ -50,9 +50,9 @@ exports.deleteUserById = async (req, res) => {
   if (!results || !results[0])
     throw new NotFoundError("That user does not exist");
 
-  await sequelize.query("DELETE FROM user_lists WHERE fk_usersid = $userId", {
-    bind: { userId },
-  });
+  // await sequelize.query("DELETE FROM user_lists WHERE fk_usersid = $userId", {
+  //   bind: { userId },
+  // });
 
   // Send back user info
   return res.sendStatus(204);
