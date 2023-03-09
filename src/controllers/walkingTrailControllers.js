@@ -1,7 +1,7 @@
 const { QueryTypes } = require("sequelize");
 const { userRoles } = require("../constants/users");
 const { sequelize } = require("../database/config");
-const { UnauthorizedError, NotFoundError } = require("../utils/errors");
+const { UnauthorizedError, NotFoundError, BadRequestError } = require("../utils/errors");
 
 exports.getAllWalkingtrails = async (req, res) => {
     const [results, metadata] = await sequelize.query(`
@@ -39,7 +39,7 @@ exports.getWalkingtrailById = async (req, res) => {
 exports.createNewWalkingtrail = async (req, res) => {
     const walkingtrailName = req.body.walkingtrail;
     const walkingtrailLocation = req.body.location || "Finns ingen angiven plats";
-    const countyName = req.body.county;
+    const countyName = req.user.name;
     const walkingtrailDistance = req.body.distance || 0;
     const walkingtrailDifficulty = req.body.difficulty || "UNKNOWN";
     const walkingtrailDescription = req.body.description || "Finns ingen beskrivning";
@@ -47,6 +47,11 @@ exports.createNewWalkingtrail = async (req, res) => {
     if ( req.user.role === userRoles.USER) {
         throw new UnauthorizedError('You do not have permission to create a walkingtrail')
     }
+
+    if (!walkingtrailName) {
+        throw new BadRequestError('Please fill in name for walkingtrail')
+    }
+
     
     const [county] = await sequelize.query(
         `

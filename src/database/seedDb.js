@@ -206,7 +206,7 @@ const seedWalkingtrailsDb = async () => {
       ((SELECT user_id FROM user WHERE name = 'Boss'), 'Bra men finns bättre.', 
       'Bra vandringsled.', 
       5, (SELECT walkingtrail_id FROM walkingtrail WHERE name = 'Helvetesbrännan')),
-      ((SELECT user_id FROM user WHERE name = 'Karen'), 'Aldrig mer.', 
+      ((SELECT user_id FROM user WHERE name = 'Bob'), 'Aldrig mer.', 
       'Fett najs ställe! Grillade korv på berget sen hitta jag en ring som lös i elden så jag tog med mig den hem.', 
       5, (SELECT walkingtrail_id FROM walkingtrail WHERE name = 'Rotenleden')),
       ((SELECT user_id FROM user WHERE name = 'Boss'), 'Fin natur', 

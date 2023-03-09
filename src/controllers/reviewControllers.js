@@ -1,7 +1,7 @@
 const { QueryTypes } = require('sequelize')
 const { userRoles } = require('../constants/users')
 const { sequelize } = require('../database/config')
-const { UnauthorizedError, NotFoundError } = require('../utils/errors')
+const { UnauthorizedError, NotFoundError, BadRequestError } = require('../utils/errors')
 
 exports.getAllReviews = async (req, res) => {
 	let query
@@ -53,6 +53,17 @@ exports.createNewReview = async (req, res) => {
         throw new UnauthorizedError('You do not have permission to create a review')
     }
 
+    if (!reviewTitle) {
+        throw new BadRequestError('Please fill in title for review')
+    }
+
+    if(!reviewRating) {
+        throw new BadRequestError('Please fill in rating for review')
+    }
+
+    if(!walkingtrailName) {
+        throw new BadRequestError('Please fill in name for walkingtrail')
+    }
 
 
     const [newReviewId] = await sequelize.query(`INSERT INTO review (fk_user_id, title, description, rating, fk_walkingtrail_id)
