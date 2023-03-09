@@ -4,7 +4,6 @@ const router = express.Router();
 const {
   getUserById,
   deleteUserById,
-  updateUser,
   getAllUsers,
 } = require("../controllers/userControllers");
 const {
@@ -13,8 +12,7 @@ const {
 } = require("../middleware/authenticationMiddleware");
 
 router.get("/", isAuthenticated, authorizeRoles(userRoles.ADMIN), getAllUsers);
-router.get("/:userId", isAuthenticated, getUserById); 
-router.put("/:userId", isAuthenticated, updateUser);
-router.delete("/:userId", isAuthenticated, deleteUserById); 
+router.get("/:userId", isAuthenticated, getUserById);
+router.delete("/:userId", isAuthenticated, deleteUserById);
 
 module.exports = router;
