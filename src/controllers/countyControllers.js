@@ -40,14 +40,14 @@ exports.getCountyById = async (req, res) => {
 
 exports.createNewCounty = async (req, res) => {
 
-    const countyName = req.body.countyName;
+    const countyName = req.body.name;
 
     if (req.user.role === userRoles.USER) {
-        throw new UnauthorizedError('You do not have permission to create a review')
+        throw new UnauthorizedError('You do not have permission to create a county')
     }
 
     const [newCountyId] = await sequelize.query(`INSERT INTO county (name)
-    VALUES ($name);
+    VALUES ($countyName);
     `,
         {
             bind: { countyName: countyName },
@@ -61,7 +61,7 @@ exports.createNewCounty = async (req, res) => {
 
 exports.updateCountyById = async (req, res) => {
     const countyId = req.params.countyId
-    const countyName = req.body.countyName;
+    const countyName = req.body.name;
 
     if (req.user.role !== userRoles.USER) {
         const [county] = await sequelize.query(
