@@ -92,7 +92,8 @@ exports.updateReviewById = async (req, res) => {
             throw new NotFoundError('We could not find the review you are looking for')
         }
 
-        if (req.user.name !== review.userName) {
+    
+        if (req.user.name !== review.userName && req.user.role === userRoles.USER) {
             throw new UnauthorizedError('You do not have permission to update this review')
         }
     
@@ -165,7 +166,7 @@ exports.deleteReviewById = async (req, res) => {
                 throw new NotFoundError('We could not find the review you are looking for')
             }
 
-            if (req.user.name !== review.userName) {
+            if (req.user.name !== review.userName && req.user.role === userRoles.USER) {
                 throw new UnauthorizedError('You do not have permission to delete this review')
             }
           
