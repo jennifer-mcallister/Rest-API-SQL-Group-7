@@ -8,7 +8,6 @@ const {
   updateWalkingtrailById,
   deleteWalkingtrailById,
 } = require("../controllers/walkingTrailControllers");
-// const { createNewReview } = require("../controllers/reviewControllers");
 
 router.get("/", isAuthenticated, getAllWalkingtrails);
 router.get("/:walkingtrailId", isAuthenticated, getWalkingtrailById);

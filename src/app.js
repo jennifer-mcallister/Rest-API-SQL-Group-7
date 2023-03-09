@@ -5,20 +5,14 @@ const apiRoutes = require("./routes");
 const { errorMiddleware } = require("./middleware/errorMiddleware");
 const { notFoundMiddleware } = require("./middleware/notFoundMiddleware");
 const { sequelize } = require("./database/config");
-// Security imports
+
 const cors = require("cors");
 const xss = require("xss-clean");
-// const mongoSanitize = require("express-mongo-sanitize");
 const { rateLimit } = require("express-rate-limit");
 const { default: helmet } = require("helmet");
-// const path = require("path"); // behöver vi denna?
 
-/* ----------- Create our Expres app ------------ */
 const app = express();
 
-/* ---------------------------------------------- */
-/* ----------------- Middleware ----------------- */
-/* ---------------------------------------------- */
 app.use(express.json());
 
 app.use((req, res, next) => {
@@ -26,31 +20,23 @@ app.use((req, res, next) => {
   next();
 });
 
-/* ---------------------------------------------- */
-/* ------------ Security Middleware ------------- */
-/* ---------------------------------------------- */
 app.use(
   cors({
     origin: ["http://localhost:3000"],
     methods: ["GET", "PUT", "PATCH", "DELETE", "POST"],
-  }) // cors är vad som är tillåtet att göra på denna host med endast dessa metoder
+  })
 );
 app.use(xss());
-// app.use(mongoSanitize());
 app.use(
   rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minuter
+    windowMs: 15 * 60 * 1000,
     max: 60,
-  }) // xss paket är limit för hur många request man får göra under en viss tid för att förhindra att systemet crashar
+  })
 );
 app.use(
-  helmet() // säkerhet för HTTP Headers i appen där känslig information (express) döljs för användarna
-  //och säkerhet för tredjeparts information att laddas tex bilden i notfound.html
+  helmet()
 );
 
-/* ---------------------------------------------- */
-/* ------------------- Routes ------------------- */
-/* ---------------------------------------------- */
 app.use("/api/v1", apiRoutes);
 
 app.use("/test/:param", (req, res) => {
@@ -60,15 +46,9 @@ app.use("/test/:param", (req, res) => {
   });
 });
 
-/* ---------------------------------------------- */
-/* --------------- Error Handling --------------- */
-/* ---------------------------------------------- */
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);
 
-/* ---------------------------------------------- */
-/* ---------------- Server Setup ---------------- */
-/* ---------------------------------------------- */
 const port = process.env.PORT || 3000;
 const run = async () => {
   try {
@@ -76,9 +56,7 @@ const run = async () => {
 
     app.listen(port, () => {
       console.log(
-        `Server is listening on ${
-          process.env.NODE_ENV === "development" ? "http://localhost:" : "port "
-        }${port}`
+        `Server is listening on http://localhost:${port}`
       );
     });
   } catch (error) {

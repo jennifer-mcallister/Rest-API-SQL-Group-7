@@ -72,7 +72,7 @@ exports.updateCountyById = async (req, res) => {
     const countyId = req.params.countyId
     const countyName = req.body.name;
 
-    if (req.user.role !== userRoles.USER) {
+    if (req.user.role === userRoles.ADMIN) {
         const [county] = await sequelize.query(
             `
             SELECT county.county_id AS countyId
@@ -90,44 +90,24 @@ exports.updateCountyById = async (req, res) => {
             throw new NotFoundError('We could not find the county you are looking for')
         }
 
-        // if (req.user.role === userRoles.COUNTY) {
-        //     const [county] = await sequelize.query(
-        //         `
-        //         SELECT county.county_id AS countyId, review.fk_user_id AS userId
-        //         FROM review
-        //         WHERE reviewId = $reviewId AND review.fk_user_id = $userId;
-        //         LIMIT 1
-        //         `,
-        //         {
-        //             bind: { reviewId: reviewId, userId: userId },
-        //             type: QueryTypes.SELECT,
-        //         }
-        //     )
+        if (countyName) {
+            await sequelize.query(`
+            UPDATE county
+            SET name = $countyName
+            WHERE county.county_id = $countyId;
+            `,
+                {
+                    bind: { countyName: countyName, countyId: countyId },
+                    type: QueryTypes.UPDATE,
+                },
+            )
+        }
 
-        //     if (county.county_id !== userId) {
-        //         throw new UnauthorizedError('You do not have permission to updated this county')
-        //     }
-        // }
+        return res.json("County was succesfully updated")
 
     } else {
         throw new UnauthorizedError('You do not have permission to update counties')
     }
-
-
-    if (countyName) {
-        await sequelize.query(`
-        UPDATE county
-        SET name = $countyName
-        WHERE county.county_id = $countyId;
-        `,
-            {
-                bind: { countyName: countyName, countyId: countyId },
-                type: QueryTypes.UPDATE,
-            },
-        )
-    }
-
-    return res.json("County was succesfully updated")
 }
 
 exports.deleteCountyById = async (req, res) => {
