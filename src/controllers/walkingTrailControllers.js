@@ -39,7 +39,7 @@ exports.getWalkingtrailById = async (req, res) => {
 exports.createNewWalkingtrail = async (req, res) => {
     const walkingtrailName = req.body.walkingtrail;
     const walkingtrailLocation = req.body.location || "Finns ingen angiven plats";
-    const countyName = req.user.name;
+    let countyName = req.user.name;
     const walkingtrailDistance = req.body.distance || 0;
     const walkingtrailDifficulty = req.body.difficulty || "UNKNOWN";
     const walkingtrailDescription = req.body.description || "Finns ingen beskrivning";
@@ -50,6 +50,13 @@ exports.createNewWalkingtrail = async (req, res) => {
 
     if (!walkingtrailName) {
         throw new BadRequestError('Please fill in name for walkingtrail')
+    }
+
+    if(req.user.role === userRoles.ADMIN) {
+        countyName = req.body.county;
+        if(!countyName) {
+            throw new BadRequestError('Please fill in county')
+        }
     }
 
     
@@ -212,10 +219,13 @@ exports.deleteWalkingtrailById = async (req, res) => {
     const walkingtrailId = req.params.walkingtrailId;
 
     if (req.user.role !== userRoles.USER) {
-        await sequelize.query(
+        const [walkingtrail] = await sequelize.query(
             `
-    		SELECT * FROM walkingtrail WHERE walkingtrail_id = $walkingtrailId
-    		LIMIT 1;
+            SELECT  walkingtrail.walkingtrail_id as walkingtrailId, walkingtrail.fk_county_id as countyId, county.name AS countyName
+            FROM walkingtrail
+            LEFT JOIN county ON countyId = county.county_id
+            WHERE walkingtrailId = $walkingtrailId;
+            LIMIT 1
     	    `,
             {
                 bind: { walkingtrailId: walkingtrailId },
@@ -223,31 +233,42 @@ exports.deleteWalkingtrailById = async (req, res) => {
             }
         );
 
-        if (!walkingtrailId) {
+        if (!walkingtrail || walkingtrail.length == 0) {
             throw new NotFoundError(
                 "We could not find the walkingtrail you are looking for"
             );
         }
 
-        await sequelize.query(
-            `DELETE FROM walkingtrail WHERE walkingtrail_id = $walkingtrailId
-        LIMIT 1;`,
+        if (req.user.name !== walkingtrail.countyName && req.user.role === userRoles.COUNTY) {
+            throw new UnauthorizedError('You do not have permission to delete this walkingtrail')
+        }
+
+        await sequelize.query(`
+            DELETE FROM review 
+            WHERE fk_walkingtrail_id = $walkingtrailId;
+            `,
             {
                 bind: { walkingtrailId: walkingtrailId },
                 type: QueryTypes.DELETE,
-            }
+            },
         );
 
-        await sequelize.query(
-            `DELETE FROM review WHERE fk_walkingtrail_id = $walkingtrailId;`,
+        await sequelize.query(`
+            DELETE FROM walkingtrail 
+            WHERE walkingtrail_id = $walkingtrailId;
+            `,
             {
                 bind: { walkingtrailId: walkingtrailId },
                 type: QueryTypes.DELETE,
-            }
+            },
         );
 
-        return res.sendStatus(204);
+        return res
+        .json("walkingtrail was succesfully deleted")
+        .sendStatus(204);
+
     } else {
+        
         throw new UnauthorizedError(
             "You do not have permission to delete this walkingtrail"
         );
