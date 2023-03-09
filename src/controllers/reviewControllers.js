@@ -43,7 +43,7 @@ exports.getReviewById = async (req, res) => {
 }
 
 exports.createNewReview = async (req, res) => {
-    const userName = req.body.userName;
+    const userName = req.user.name;
     const reviewTitle = req.body.title;
     const reviewDescription = req.body.description || "";
     const reviewRating = req.body.rating;
@@ -52,6 +52,8 @@ exports.createNewReview = async (req, res) => {
     if ( req.user.role === userRoles.COUNTY ) {
         throw new UnauthorizedError('You do not have permission to create a review')
     }
+
+
 
     const [newReviewId] = await sequelize.query(`INSERT INTO review (fk_user_id, title, description, rating, fk_walkingtrail_id)
     VALUES ((SELECT user_id FROM user WHERE name = $userName), $reviewTitle, $reviewDescription, $reviewRating, (SELECT walkingtrail_id FROM walkingtrail WHERE name = $walkingtrailName));
