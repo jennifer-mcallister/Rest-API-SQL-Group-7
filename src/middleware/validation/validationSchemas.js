@@ -16,7 +16,6 @@ exports.registerSchema = [
     .withMessage(
       "You must provide a username between 5 and 50 characters long"
     ),
-  //behöver kolla om vi behöver denna user
 ];
 
 exports.loginSchema = [
