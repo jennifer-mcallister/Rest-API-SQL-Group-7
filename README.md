@@ -55,5 +55,5 @@ JWT_SECRET=XXXX
 | Bob(USER)              | bobby123@mail.com           | secret   |
 | Frans(USER)            | forest_frans@mail.com       | secret   |
 | Karen(USER)            | karen@mail.com              | secret   |
-| Anna(USER)            | anna_maja@mail.com          | secret   |
+| Anna(USER)             | anna_maja@mail.com          | secret   |
 | May-Britt(USER)        | brittan@mail.com            | secret   |
