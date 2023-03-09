@@ -31,9 +31,49 @@ exports.getUserById = async (req, res) => {
 };
 
 exports.updateUser = async (req, res) => {
+  // try {
+  //   const userId = req.params.userId;
+  //   const { user_name, user_email, user_password } = req.body;
+
+  //   const salt = await bcrypt.genSalt(10);
+
+  //   const hashedpass = await bcrypt.hash(user_password, salt);
+
+  //   const [user] = await sequelize.query(
+  //     `SELECT * FROM user u
+  //     WHERE user_id = $userId;`,
+  //     {
+  //       bind: { userId: req.params.userId },
+  //     }
+  //   );
+
+  //   if (user.length === 0) throw new NotFoundError("That user does not exist");
+
+  //   if (userId != req.users.id && !req.users.is_admin) {
+  //     throw new UnauthorizedError("Unauthorized Access");
+  //   } else {
+  //     const [updatedUser] = await sequelize.query(
+  //       `UPDATE user SET user_name = $user_name, user_email = $user_email, user_password = $user_password WHERE user_id = $userId RETURNING user_id, user_name, user_email, is_admin`,
+  //       {
+  //         bind: {
+  //           userId: userId,
+  //           user_name: user_name,
+  //           user_email: user_email,
+  //           user_password: hashedpass,
+  //         },
+  //       }
+  //     );
+
+  //     return res.json(updatedUser);
+  //   }
+  // } catch (error) {
+  //   console.error(error);
+  //   return res.status(500).json({ message: error.message });
+  // }
+
   const userId = req.params.userId;
 
-  let { name, password, email } = req.body;
+  let { username, password, email } = req.body;
 
   //ADMIN kan ändra alla konton, medans OWNER & USER kan endast ändra sina egna konto-uppgifter
   if (userId != req.user?.userId && req.user.role !== userRoles.ADMIN) {
@@ -44,17 +84,19 @@ exports.updateUser = async (req, res) => {
   const hashedpassword = await bcrypt.hash(password, salt);
 
   const [updatedUser, metadata] = await sequelize.query(
-    `UPDATE user SET name = $name, password = $password, email = $email WHERE user_id = $userId RETURNING *;`,
+    `UPDATE user SET name = $username, password = $password, email = $email WHERE user_id = $userId RETURNING *;`,
     {
       bind: {
         userId: userId,
-        name: name,
+        username: username,
         password: hashedpassword,
         email: email,
       },
       type: QueryTypes.UPDATE,
     }
   );
+
+  return res.sendStatus(201).send(updatedUser);
 };
 
 exports.deleteUserById = async (req, res) => {
