@@ -40,6 +40,20 @@ exports.updateUser = async (req, res) => {
     throw new UnauthorizedError("You can only update your own account");
   }
 
+  if (req.user.role === userRoles.ADMIN) {
+    const userRole = req.body.role;
+
+    await sequelize.query(
+      `UPDATE user SET fk_role_id = (SELECT role_id FROM role WHERE role = $userRole) WHERE user_id = $userId RETURNING *;`,
+      {
+        bind: { userRole: userRole, userId: userId },
+        type: QueryTypes.UPDATE,
+      }
+    );
+
+    return res.json("Successfully updated role");
+  }
+
   const salt = await bcrypt.genSalt(10);
   const hashedpassword = await bcrypt.hash(password, salt);
 
