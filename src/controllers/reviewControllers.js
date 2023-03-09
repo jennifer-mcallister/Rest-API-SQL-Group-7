@@ -41,28 +41,7 @@ exports.getReviewById = async (req, res) => {
 
 	return res.json(results)
 }
-exports.getReviewByWalkingtrail = async (req, res) => {
-    const walkingtrailName = req.params.walkingtrailName;
 
-	const [results] = await sequelize.query(
-		`
-			SELECT review.review_id, user.user_id, user.name AS user, review.title, review.description, review.rating, walkingtrail.walkingtrail_id, walkingtrail.name AS walkingtrail
-			FROM review 
-            LEFT JOIN user ON review.fk_user_id = user.user_id
-            LEFT JOIN walkingtrail ON review.fk_walkingtrail_id = walkingtrail.walkingtrail_id
-            WHERE walkingtrail = $walkingtrailName
-            LIMIT 10
-		`,
-        {
-            bind: { walkingtrailName: walkingtrailName},
-            type: QueryTypes.SELECT,
-        }
-	)
-
-    console.log(results.length)
-
-    return res.json(results)
-}
 exports.createNewReview = async (req, res) => {
     const userName = req.body.userName;
     const reviewTitle = req.body.title;
