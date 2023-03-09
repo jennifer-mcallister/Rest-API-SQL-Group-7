@@ -46,10 +46,14 @@ JWT_SECRET=XXXX
 
 # users
 
-| USER        | EMAIL                 | PASSWORD |
-| ----------- | --------------------- | -------- |
-| Boss(ADMIN) | boss@mail.com         | 123      |
-| Bob(COUNTY) | bobby123@mail.com     | secret   |
-| Frans(USER) | forest_frans@mail.com | secret   |
-| Karen(USER) | karen@mail.com        | secret   |
-| Anna(ADMIN) | anna_maja@mail.com    | secret   |
+| USER                   | EMAIL                       | PASSWORD |
+| ---------------------- | --------------------------- | -------- |
+| Boss(ADMIN)            | boss@mail.com               | 123      |
+| Stockholm(COUNTY)      | stockholm@mail.com          | secret   |
+| Västernorrland(COUNTY) | vasternorrland@mail.com     | secret   |
+| Abisko(COUNTY)         | abisko@mail.com             | secret   |
+| Bob(USER)              | bobby123@mail.com           | secret   |
+| Frans(USER)            | forest_frans@mail.com       | secret   |
+| Karen(USER)            | karen@mail.com              | secret   |
+| Anna(ADMIN)            | anna_maja@mail.com          | secret   |
+| May-Britt(USER)        | brittan@mail.com            | secret   |
