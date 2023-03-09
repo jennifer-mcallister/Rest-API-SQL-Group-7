@@ -11,19 +11,20 @@ exports.register = async (req, res) => {
   const salt = await bcrypt.genSalt(10);
   const hashedpassword = await bcrypt.hash(password, salt);
   const [results, metadata] = await sequelize.query(
-    "SELECT user_id FROM user LIMIT 1"
+    "SELECT * FROM user LIMIT 1"
   );
 
   if (!results || results.length < 1) {
 
     await sequelize.query(
-      'INSERT INTO user (email, password, fk_role_id, name) VALUES ($email, $password, 1, $user, )',
+      `INSERT INTO user (email, password, fk_role_id, name) VALUES ($email, $password, '1', $user);`,
       {
         bind: {
           password: hashedpassword,
           email: email,
           user: user
-        }
+        },
+        type: QueryTypes.INSERT,
       }
     )
   } else {
